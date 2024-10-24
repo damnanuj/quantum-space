@@ -29,24 +29,20 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    bannerImage: {
+    coverPicture: {
       type: String,
       default: "",
-    },
-    headline: {
-      type: String,
-      default: "Quantum Space User",
-      maxlength: 100,
-    },
-    location: {
-      type: String,
-      default: "Earth",
     },
     about: {
       type: String,
       default: "Explorer of Quantum Space.",
       maxlength: 500,
     },
+    location: {
+      type: String,
+      default: "Earth",
+    },
+
     education: [
       //education details
       {
@@ -80,12 +76,14 @@ const userSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+        default: [],
       },
     ], // user IDs following this user
     following: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+        default: [],
       },
     ], //user IDs this user is following
     posts: [
@@ -96,7 +94,7 @@ const userSchema = new mongoose.Schema(
     ], // post IDs created by this user
     verified: {
       type: Boolean,
-      default: false,
+      default: false, //userVerified or not
     },
     accountStatus: {
       type: String,

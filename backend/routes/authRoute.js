@@ -1,4 +1,5 @@
 import express from "express";
+import { protectRoute } from "../lib/middleware/protectRoute.js";
 import {
   loginController,
   logoutController,
@@ -6,6 +7,7 @@ import {
 } from "../controllers/authController.js";
 
 const router = express.Router();
+
 
 router.post("/signup", signupController);
 router.post("/login", loginController);
