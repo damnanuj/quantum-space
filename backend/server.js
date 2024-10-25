@@ -1,24 +1,30 @@
-import express from "express"
-import dotenv from "dotenv"
-import authRoutes from "./routes/authRoute.js"
+import express from "express";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 
-import { connectMongoDb } from "./db/db.js"
-import cookieParser from "cookie-parser"
+// >>============File Imports=========>>
+import authRoutes from "./routes/authRoute.js";
+import homeRoutes from "./routes/homeRoute.js";
+import userRoutes from "./routes/userRoutes.js";
 
+import { connectMongoDb } from "./db/connectMongoDb.js";
 
+dotenv.config();
 
-dotenv.config()
+const app = express();
 
-const app = express()
+const PORT = process.env.PORT || 8000;
 
-const PORT = process.env.PORT || 8000
+app.use(express.json()); //json body parser
+app.use(cookieParser()); //cookie parser
+app.use(express.urlencoded({ extended: true })); //data parser from form
 
-app.use(express.json())  //json body parser
-app.use(cookieParser()) //cookie parser
+app.use("/", homeRoutes);
 
-app.use("/api/auth", authRoutes)
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
-app.listen(PORT, ()=>{
-    console.log(`Quantom Server is Running on PORT : ${PORT}`);
-    connectMongoDb()
-})
+app.listen(PORT, () => {
+  console.log(`Quantom Server is Running on http://localhost:${PORT}`);
+  connectMongoDb();
+});

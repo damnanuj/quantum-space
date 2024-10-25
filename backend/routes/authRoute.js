@@ -1,5 +1,5 @@
 import express from "express";
-import { protectRoute } from "../lib/middleware/protectRoute.js";
+
 import {
   loginController,
   logoutController,
