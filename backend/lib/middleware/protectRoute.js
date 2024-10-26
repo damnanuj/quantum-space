@@ -3,7 +3,7 @@ import User from "../../models/userModel.js";
 
 export const protectRoute = async (req, res, next) => {
   try {
-    const token = req.cookies["quantom-space"];
+    const token = req.cookies["quantum-space"];
     //>>=========== Check if token is available======>>
     if (!token) {
       return res.status(401).json({

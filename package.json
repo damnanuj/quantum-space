@@ -1,7 +1,7 @@
 {
-  "name": "quantom-space",
+  "name": "quantum-space",
   "version": "1.0.0",
-  "description": "Quantom Space a social media web app",
+  "description": "Quantum-Space a social media web app",
   "main": "backend/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

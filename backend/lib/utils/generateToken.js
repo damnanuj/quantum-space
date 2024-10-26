@@ -9,7 +9,7 @@ export const generateTokenAndSetCookie = (user, res) => {
   );
 
   // Set the cookie with the token
-  res.cookie("quantom-space", token, {
+  res.cookie("quantum-space", token, {
     httpOnly: true,
     maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
     sameSite: "strict",

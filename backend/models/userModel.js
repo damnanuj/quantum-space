@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
       trim: true,
-      lowercase: true, //  lowercase usernames
+      lowercase: true, // lowercase usernames
     },
     email: {
       type: String,
@@ -24,6 +24,24 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+    gender: {
+      type: String,
+      required: true,
+    },
+    location: {
+      city: {
+        type: String,
+        default: "Unknown",
+      },
+      state: {
+        type: String,
+        default: "Unknown",
+      },
+      country: {
+        type: String,
+        default: "Earth",
+      },
     },
     profilePicture: {
       type: String,
@@ -38,13 +56,7 @@ const userSchema = new mongoose.Schema(
       default: "Explorer of Quantum Space.",
       maxlength: 500,
     },
-    location: {
-      type: String,
-      default: "Earth",
-    },
-
     education: [
-      //education details
       {
         school: {
           type: String,
@@ -78,23 +90,23 @@ const userSchema = new mongoose.Schema(
         ref: "User",
         default: [],
       },
-    ], // user IDs following this user
+    ],
     following: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         default: [],
       },
-    ], //user IDs this user is following
+    ],
     posts: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Post",
       },
-    ], // post IDs created by this user
+    ],
     verified: {
       type: Boolean,
-      default: false, //userVerified or not
+      default: false,
     },
     accountStatus: {
       type: String,
@@ -103,29 +115,29 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "admin", "moderator"], //permissions
+      enum: ["user", "admin", "moderator"],
       default: "user",
     },
     isPrivate: {
       type: Boolean,
-      default: false, // Privacy setting for the account
+      default: false,
     },
     website: {
       type: String,
-      default: "", // websites or portfolios links
+      default: "",
     },
     lastLogin: {
-      type: Date, //last login time
+      type: Date,
     },
     notifications: {
-      type: Array, // Array of notifications
+      type: Array,
       default: [],
     },
     resetPasswordToken: {
-      type: String, //password reset functionality
+      type: String,
     },
     resetPasswordExpires: {
-      type: Date, // Expiration for reset token
+      type: Date,
     },
   },
   { timestamps: true }

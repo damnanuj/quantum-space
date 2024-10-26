@@ -25,6 +25,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Quantom Server is Running on http://localhost:${PORT}`);
+  console.log(`Quantum Server is Running on http://localhost:${PORT}`);
   connectMongoDb();
 });

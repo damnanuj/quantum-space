@@ -1,4 +1,6 @@
+import mongoose from "mongoose";
 import User from "../models/userModel.js";
+import Notification from "../models/notficationModel.js";
 
 // >>================get the user Profile Details==================================>>
 export const getUserProfile = async (req, res) => {
@@ -25,6 +27,15 @@ export const followUnfollowUser = async (req, res) => {
   const loggedUserId = req.user._id; // ID of the authenticated user
 
   try {
+    // >>===== Validate if targetUserId is a valid ObjectId ======>>
+    if (!mongoose.Types.ObjectId.isValid(targetUserId)) {
+      return res.status(400).json({
+        error: "Invalid User ID",
+        message:
+          "The provided user ID is not valid. Please check the ID and try again.",
+      });
+    }
+
     // >>===== Prevent users from following/unfollowing themselves=======>>
     if (loggedUserId.toString() === targetUserId) {
       return res
@@ -60,10 +71,21 @@ export const followUnfollowUser = async (req, res) => {
     await user.save();
     await targetUser.save();
 
+    // >>============== Send the notification =====================>>
+
+    const newNotification = new Notification({
+      from: loggedUserId,
+      to: targetUserId,
+      type: "follow",
+      content: `${user.username} has started following you.`,
+    });
+    await newNotification.save();
+
     // >>======= Return a success message with the status ===========>>
     const message = isFollowing
       ? "User unfollowed successfully"
       : "User followed successfully";
+      
     return res.status(200).json({ message });
   } catch (error) {
     console.log("Error in followUnfollowUser Controller:", error.message);
@@ -73,3 +95,19 @@ export const followUnfollowUser = async (req, res) => {
     });
   }
 };
+
+// >>================User Suggestions==================================>>
+export const getSuggestedUsers = async (req,res)=>{
+  try {
+    const loggedUserId = req.user._id; // ID of the authenticated user
+
+    const usersFollowedByMe = await User.findById(loggedUserId).select("following")
+    res.status(200).json(usersFollowedByMe)
+  } catch (error) {
+    console.log("Error in userSuggestions Controller:", error.message);
+    return res.status(500).json({
+      error: "Internal server error",
+      message: error.message,
+    });
+  }
+}

@@ -6,7 +6,7 @@ import { generateTokenAndSetCookie } from "../lib/utils/generateToken.js";
 //=======================signup Controller==============================
 export const signupController = async (req, res) => {
   try {
-    const { name, username, email, password } = req.body;
+    const { name, username, email, gender, password } = req.body;
 
     // >>=============Validating Data from reqBody=========>>
     try {
@@ -34,6 +34,7 @@ export const signupController = async (req, res) => {
       name,
       username,
       email,
+      gender,
       password: hashedPassword,
     });
 
@@ -109,7 +110,7 @@ export const loginController = async (req, res) => {
 //====================logout Controller==========================>>
 export const logoutController = (req, res) => {
   //=====Clear the authentication cookie=====>
-  res.clearCookie("quantom-space", {
+  res.clearCookie("quantum-space", {
     httpOnly: true,
     sameSite: "strict",
     secure: process.env.NODE_ENV === "production",
