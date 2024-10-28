@@ -12,7 +12,10 @@ export const signupController = async (req, res) => {
     try {
       await userDataValidation({ name, username, email, password });
     } catch (validationError) {
-      return res.status(400).json({ message: validationError.message });
+      return res.status(400).json({
+        success: false,
+        message: validationError.message,
+      });
     }
 
     //>>=======already existing email or username check=====>>
@@ -22,7 +25,10 @@ export const signupController = async (req, res) => {
 
     if (existingUser) {
       const errorField = existingUser.email === email ? "Email" : "Username";
-      return res.status(400).json({ message: `${errorField} already exists` });
+      return res.status(400).json({
+        success: false,
+        message: `${errorField} already exists`,
+      });
     }
 
     //>>===============Hash the password============>>
@@ -45,17 +51,20 @@ export const signupController = async (req, res) => {
     } catch (tokenError) {
       console.error("Token generation failed:", tokenError.message);
       return res.status(201).json({
+        success: true,
         message: "User registered successfully. Please log in manually.",
         error: tokenError.message,
       });
     }
     // =====return final response json=====>>
     return res.status(201).json({
+      success: true,
       message: "User Registered Successfully",
     });
   } catch (error) {
     console.log("Error in Signup Controller :", error.message);
     return res.status(500).json({
+      success: false,
       error: "Internal server error",
       message: error.message,
     });
@@ -70,6 +79,7 @@ export const loginController = async (req, res) => {
     //>>====== all fields check=====>>
     if (!email || !password) {
       return res.status(400).json({
+        success:false,
         message: "Missing user credentials",
       });
     }
@@ -78,6 +88,7 @@ export const loginController = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({
+        success:false,
         message: "Invalid email or password",
       });
     }
@@ -87,6 +98,7 @@ export const loginController = async (req, res) => {
     //=== bcrypt.compare to check the hashed password==>
     if (!isPassMatched) {
       return res.status(400).json({
+        success:false,
         message: "Invalid email or password", // Single error message for both cases
       });
     }
@@ -96,11 +108,13 @@ export const loginController = async (req, res) => {
 
     //>>====Final Login success response========>>
     return res.status(200).json({
+      success:true,
       message: "User logged in successfully",
     });
   } catch (error) {
     console.log("Error in Login Controller :", error.message);
     return res.status(500).json({
+      success: false,
       error: "Internal server error",
       message: error.message,
     });
@@ -110,12 +124,24 @@ export const loginController = async (req, res) => {
 //====================logout Controller==========================>>
 export const logoutController = (req, res) => {
   //=====Clear the authentication cookie=====>
-  res.clearCookie("quantum-space", {
-    httpOnly: true,
-    sameSite: "strict",
-    secure: process.env.NODE_ENV === "production",
-  });
+  try {
+    res.clearCookie("quantum-space", {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+    });
 
-  // Send response
-  return res.status(200).json({ message: "Logged out successfully" });
+    // Send response
+    return res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    console.log("Error in logout Controller :", error.message);
+    return res.status(500).json({
+      success: false,
+      error: "Internal server error",
+      message: error.message,
+    });
+  }
 };

@@ -168,7 +168,6 @@ export const updateUserProfile = async (req, res) => {
     education,
     profilePicture,
     coverPicture,
-    isPrivate,
     website,
     currentPassword,
     newPassword,
@@ -184,41 +183,68 @@ export const updateUserProfile = async (req, res) => {
       });
     }
 
-    // >>===== Check if the username or email already exists for another user ======>>
+    // >>===== Find the authenticated user in the database ======>>
+    const user = await User.findById(loggedUserId);
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        error: "User Not Found",
+        message: "The specified user could not be found.",
+      });
+    }
+
+    // >>===== Check if username or email already exists for another user ======>>
     const existingUser = await User.findOne({
       $or: [{ username }, { email }],
-      _id: { $ne: loggedUserId },
+      _id: { $ne: loggedUserId }, // Exclude the logged-in user
     });
 
     if (existingUser) {
       return res.status(400).json({
         success: false,
         error: "Conflict",
-        message:
-          "Username or email is already in use. Please use a different one.",
+        message: "Username or email is already in use. Please choose another.",
       });
     }
 
-    // >>===== Prepare the fields to update ======>>
-    const updatedFields = {
-      ...(name && { name }),
-      ...(username && { username }),
-      ...(email && { email }),
-      ...(gender && { gender }),
-      ...(location && { location }),
-      ...(about && { about }),
-      ...(Array.isArray(education) && { education }),
-      ...(profilePicture && { profilePicture }),
-      ...(coverPicture && { coverPicture }),
-      ...(typeof isPrivate === "boolean" && { isPrivate }),
-      ...(website && { website }),
-    };
+    // >>===== Update the fields provided in the request ======>>
+    if (name) user.name = name;
+    if (username) user.username = username;
+    if (email) user.email = email;
+    if (gender) user.gender = gender;
+    if (location) user.location = location;
+    if (about) user.about = about;
+    if (education) user.education = education;
+    if (profilePicture) user.profilePicture = profilePicture;
+    if (coverPicture) user.coverPicture = coverPicture;
+    if (website) user.website = website;
 
-    // >>===== Check for password update ======>>
-    if (newPassword) {
-      // Retrieve the user from the database
-      const user = await User.findById(loggedUserId);
-      // Verify current password
+  // >>============== Check for complete password update data =============>>
+    if (
+      (currentPassword && !newPassword) ||
+      (!currentPassword && newPassword)
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid Credentials",
+        message:
+          "Both current password and new password are required to update the password.",
+      });
+    }
+
+    // >>=================== Password update section =======================>>
+    if (currentPassword && newPassword) {
+      // >>=== Validate new password against regex requirements ===>
+      if (!regexPatterns.password.test(newPassword)) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid Credentials",
+          message:
+            "New password must be at least 6 characters long and include both uppercase and lowercase letters.",
+        });
+      }
+
+      // >>=== Verify the current password matches the stored password ===>
       const isMatch = await bcrypt.compare(currentPassword, user.password);
       if (!isMatch) {
         return res.status(400).json({
@@ -228,22 +254,25 @@ export const updateUserProfile = async (req, res) => {
         });
       }
 
-      // Hash the new password and add it to the updated fields
-      updatedFields.password = await bcrypt.hash(newPassword, 10);
+      // >>===== Hash the new password and update it ======>>
+      const salt = await bcrypt.genSalt(Number(process.env.SALT));
+      const newHashedPassword = await bcrypt.hash(newPassword, salt);
+      user.password = newHashedPassword;
     }
 
-    // >>===== Update the user profile ======>>
-    const updatedUser = await User.findByIdAndUpdate(
-      loggedUserId,
-      { $set: updatedFields },
-      { new: true, runValidators: true } // return the updated document
-    ).select("-password"); // Exclude password field from response
+    // >>======= Save the updated user to the database =======>
+    const updatedUser = await user.save()
 
-    // >>===== Send success response with updated user data ======>>
+    // >>======= Send the response with updated user details, excluding password =======>
+    const updatedUserData = updatedUser.toObject(); 
+    delete updatedUserData.password; 
+//>>==Object creation and manually removing password 
+//=====is done to avoid another database query=====>>
+
     return res.status(200).json({
       success: true,
-      data: updatedUser,
-      message: "User profile updated successfully",
+      data: updatedUserData,
+      message: "User profile updated successfully.",
     });
   } catch (error) {
     console.log("Error in updateUserProfile Controller:", error.message);
