@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import User from "../models/userModel.js";
 import Notification from "../models/notficationModel.js";
 import { regexPatterns } from "../lib/utils/authUtill.js";
+import { v2 as cloudinary } from "cloudinary";
+import bcrypt from "bcryptjs";
 
 // >>================get the user Profile Details==================================>>
 export const getUserProfile = async (req, res) => {
@@ -163,7 +165,9 @@ export const updateUserProfile = async (req, res) => {
     username,
     email,
     gender,
-    location,
+    city,
+    state,
+    country,
     about,
     education,
     profilePicture,
@@ -193,18 +197,95 @@ export const updateUserProfile = async (req, res) => {
       });
     }
 
-    // >>===== Check if username or email already exists for another user ======>>
-    const existingUser = await User.findOne({
-      $or: [{ username }, { email }],
-      _id: { $ne: loggedUserId }, // Exclude the logged-in user
-    });
+    // >>===== Specific Checks for Username and Email Conflicts ======>>
+    if (username) {
+      const existingUserByUsername = await User.findOne({
+        username,
+        _id: { $ne: loggedUserId },
+      });
+      if (existingUserByUsername) {
+        return res.status(400).json({
+          success: false,
+          error: "Conflict",
+          message: "Username is already in use. Please choose another.",
+        });
+      }
+    }
 
-    if (existingUser) {
+    if (email) {
+      const existingUserByEmail = await User.findOne({
+        email,
+        _id: { $ne: loggedUserId },
+      });
+      if (existingUserByEmail) {
+        return res.status(400).json({
+          success: false,
+          error: "Conflict",
+          message: "Email is already in use. Please choose another.",
+        });
+      }
+    }
+
+    // >>===== Regex Validation for Fields ======>>
+    if (name && !regexPatterns.name.test(name)) {
       return res.status(400).json({
         success: false,
-        error: "Conflict",
-        message: "Username or email is already in use. Please choose another.",
+        error: "Validation Error",
+        message: "Name should contain only letters and spaces.",
       });
+    }
+    if (username && !regexPatterns.username.test(username)) {
+      return res.status(400).json({
+        success: false,
+        error: "Validation Error",
+        message: "Username should be alphanumeric, 3-15 characters.",
+      });
+    }
+    if (email && !regexPatterns.email.test(email)) {
+      return res.status(400).json({
+        success: false,
+        error: "Validation Error",
+        message: "Please provide a valid email address.",
+      });
+    }
+
+    // >>===== Gender Validation ======>>
+    if (gender && !["male", "female"].includes(gender.toLowerCase())) {
+      return res.status(400).json({
+        success: false,
+        error: "Validation Error",
+        message: "Gender must be either 'male' or 'female'.",
+      });
+    }
+
+    // >>=============For storing the Images ======================>>
+    if (profilePicture) {
+      const uploadedProfileResponse = await cloudinary.uploader.upload(
+        profilePicture
+      );
+      const newProfilePictureUrl = uploadedProfileResponse.secure_url;
+
+      //>>==successfully upload img then destry=====>>
+      if (user.profilePicture) {
+        await cloudinary.uploader.destroy(
+          user.profilePicture.split("/").pop().split(".")[0]
+        );
+      }
+      user.profilePicture = newProfilePictureUrl;
+    }
+
+    if (coverPicture) {
+      const uploadedCoverResponse = await cloudinary.uploader.upload(
+        coverPicture
+      );
+      const newCoverPictureUrl = uploadedCoverResponse.secure_url;
+      //>>==successfully upload img then destry=====>>
+      if (user.coverPicture) {
+        await cloudinary.uploader.destroy(
+          user.coverPicture.split("/").pop().split(".")[0]
+        );
+      }
+      user.coverPicture = newCoverPictureUrl;
     }
 
     // >>===== Update the fields provided in the request ======>>
@@ -212,14 +293,14 @@ export const updateUserProfile = async (req, res) => {
     if (username) user.username = username;
     if (email) user.email = email;
     if (gender) user.gender = gender;
-    if (location) user.location = location;
+    if (city) user.location.city = city;
+    if (state) user.location.state = state;
+    if (country) user.location.country = country;
     if (about) user.about = about;
     if (education) user.education = education;
-    if (profilePicture) user.profilePicture = profilePicture;
-    if (coverPicture) user.coverPicture = coverPicture;
     if (website) user.website = website;
 
-  // >>============== Check for complete password update data =============>>
+    // >>============== Check for complete password update data =============>>
     if (
       (currentPassword && !newPassword) ||
       (!currentPassword && newPassword)
@@ -234,7 +315,6 @@ export const updateUserProfile = async (req, res) => {
 
     // >>=================== Password update section =======================>>
     if (currentPassword && newPassword) {
-      // >>=== Validate new password against regex requirements ===>
       if (!regexPatterns.password.test(newPassword)) {
         return res.status(400).json({
           success: false,
@@ -244,7 +324,6 @@ export const updateUserProfile = async (req, res) => {
         });
       }
 
-      // >>=== Verify the current password matches the stored password ===>
       const isMatch = await bcrypt.compare(currentPassword, user.password);
       if (!isMatch) {
         return res.status(400).json({
@@ -254,25 +333,21 @@ export const updateUserProfile = async (req, res) => {
         });
       }
 
-      // >>===== Hash the new password and update it ======>>
       const salt = await bcrypt.genSalt(Number(process.env.SALT));
       const newHashedPassword = await bcrypt.hash(newPassword, salt);
       user.password = newHashedPassword;
     }
 
     // >>======= Save the updated user to the database =======>
-    const updatedUser = await user.save()
+    const updatedUser = await user.save();
 
-    // >>======= Send the response with updated user details, excluding password =======>
-    const updatedUserData = updatedUser.toObject(); 
-    delete updatedUserData.password; 
-//>>==Object creation and manually removing password 
-//=====is done to avoid another database query=====>>
+    const updatedUserData = updatedUser.toObject();
+    delete updatedUserData.password;
 
     return res.status(200).json({
       success: true,
-      data: updatedUserData,
       message: "User profile updated successfully.",
+      data: updatedUserData,
     });
   } catch (error) {
     console.log("Error in updateUserProfile Controller:", error.message);

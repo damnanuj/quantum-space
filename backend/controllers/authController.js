@@ -79,7 +79,7 @@ export const loginController = async (req, res) => {
     //>>====== all fields check=====>>
     if (!email || !password) {
       return res.status(400).json({
-        success:false,
+        success: false,
         message: "Missing user credentials",
       });
     }
@@ -88,7 +88,7 @@ export const loginController = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({
-        success:false,
+        success: false,
         message: "Invalid email or password",
       });
     }
@@ -98,18 +98,19 @@ export const loginController = async (req, res) => {
     //=== bcrypt.compare to check the hashed password==>
     if (!isPassMatched) {
       return res.status(400).json({
-        success:false,
+        success: false,
         message: "Invalid email or password", // Single error message for both cases
       });
     }
-
+      user.password = undefined;
     //>>==== generate token and set cookie =======>
     generateTokenAndSetCookie(user, res);
 
     //>>====Final Login success response========>>
     return res.status(200).json({
-      success:true,
+      success: true,
       message: "User logged in successfully",
+      data: user,
     });
   } catch (error) {
     console.log("Error in Login Controller :", error.message);
