@@ -7,6 +7,7 @@ import { v2 as cloudinary } from "cloudinary";
 import authRoutes from "./routes/authRoute.js";
 import homeRoutes from "./routes/homeRoute.js";
 import userRoutes from "./routes/userRoutes.js";
+import postRoutes from "./routes/postRoutes.js";
 
 import { connectMongoDb } from "./db/connectMongoDb.js";
 
@@ -30,6 +31,7 @@ app.use("/", homeRoutes);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
 
 app.listen(PORT, () => {
   console.log(`Quantum Server is Running on http://localhost:${PORT}`);

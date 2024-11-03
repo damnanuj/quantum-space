@@ -1,5 +1,6 @@
 import express from "express";
-import { protectRoute } from "../lib/middleware/protectRoute.js";
+import protectRoute from "../lib/middleware/protectRoute.js";
+
 
 // >>=====User controllers Imports============>>
 import {
