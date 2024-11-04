@@ -104,6 +104,12 @@ const userSchema = new mongoose.Schema(
         ref: "Post",
       },
     ],
+    likedPosts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
     verified: {
       type: Boolean,
       default: false,
@@ -127,16 +133,6 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
     lastLogin: {
-      type: Date,
-    },
-    notifications: {
-      type: Array,
-      default: [],
-    },
-    resetPasswordToken: {
-      type: String,
-    },
-    resetPasswordExpires: {
       type: Date,
     },
   },
