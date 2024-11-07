@@ -1,7 +1,7 @@
 
-# QuantumsSpace API Documentation
+# Quantum-Space API Documentation
 
-QuantumsSpace is a social media platform where users can post updates, interact with each other, and stay informed through notifications. This documentation provides a comprehensive guide on how to interact with QuantumsSpace's API endpoints for authentication, posts, notifications, and user management.
+Quantum Space is a social media platform where users can post updates, interact with each other, and stay informed through notifications. This documentation provides a comprehensive guide on how to interact with Quantum-Space's API endpoints for authentication, posts, notifications, and user management.
 
 ## Table of Contents
 
@@ -14,13 +14,13 @@ QuantumsSpace is a social media platform where users can post updates, interact 
 
 ### Introduction
 
-QuantumsSpace APIs are designed for developers to easily integrate social features into their applications. Whether you're looking to enable user registration, manage posts, or notify users, these endpoints make it simple.
+Quantum-Space APIs are designed for developers to easily integrate social features into their applications. Whether you're looking to enable user registration, manage posts, or notify users, these endpoints make it simple.
 
 ---
 
 ### API Modules
 
-Each API module focuses on a specific aspect of QuantumsSpace functionality. For detailed information on the routes and usage instructions, please refer to the respective module documentation below.
+Each API module focuses on a specific aspect of Quantum-Space functionality. For detailed information on the routes and usage instructions, please refer to the respective module documentation below.
 
 - **Authentication** - [auth.md](auth.md): Handles user registration, login, and logout.
 - **Posts** - [posts.md](posts.md): Allows users to create, edit, and delete posts.
@@ -41,7 +41,7 @@ To use these APIs, set up your environment with the required dependencies and st
 
 Each API module contains information on the routes, request methods, expected parameters, and responses. For complete details, see the links to each module’s documentation.
 
-Happy coding with QuantumsSpace!
+Happy coding with Quantum-Space!
 
 ---
 

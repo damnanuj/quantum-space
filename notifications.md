@@ -4,7 +4,7 @@
 # Notifications API Documentation
 ===============================
 
-This document provides details on the available endpoints for managing notifications within the QuantumsSpace platform. Users can fetch notifications and delete individual or all notifications. Each route is protected by an authentication middleware that verifies the JWT token stored in cookies.
+This document provides details on the available endpoints for managing notifications within the Quantum-Space platform. Users can fetch notifications and delete individual or all notifications. Each route is protected by an authentication middleware that verifies the JWT token stored in cookies.
 
 ----------------------------------------------------------
 
