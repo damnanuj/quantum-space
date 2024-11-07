@@ -89,7 +89,7 @@ export const loginController = async (req, res) => {
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: "Invalid email or password",
+        message: "Invalid credentials",
       });
     }
 
@@ -135,7 +135,7 @@ export const logoutController = (req, res) => {
     // Send response
     return res.status(200).json({
       success: true,
-      message: "Logged out successfully",
+      message: "Logout successful",
     });
   } catch (error) {
     console.log("Error in logout Controller :", error.message);
