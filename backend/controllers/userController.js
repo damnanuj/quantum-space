@@ -119,7 +119,7 @@ export const followUnfollowUser = async (req, res) => {
 };
 
 // >>================User Suggestions==================================>>
-export const getSuggestedUsers = async (req, res) => {
+export const getUserSuggestions = async (req, res) => {
   try {
     const loggedUserId = req.user._id; // ID of the authenticated user
 
@@ -144,6 +144,7 @@ export const getSuggestedUsers = async (req, res) => {
     // >>=======Final suggestions data==========>>
     res.status(200).json({
       success: true,
+      count : suggestedUsers.length,
       data: suggestedUsers,
       message: "User suggestions fetched successfully",
     });

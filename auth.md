@@ -24,7 +24,7 @@
   - `password`: string (required)
 - **Response**:
   - 200 OK: `{"success": true, "message": "Welcome back ${username}", "data: userData }`
-  - 401 Unauthorized: `{"success": false, "message": "Invalid credentials" }`
+  - 400 Bad Request: `{"success": false, "message": "Invalid credentials"/"Validation error message" }`
 
 ## 3. Logout
 - **URL**: `/api/auth/logout`

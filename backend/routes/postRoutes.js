@@ -15,8 +15,8 @@ import {
 
 const router = express.Router();
 
-router.post("/create-post", protectRoute, createPost);
-router.delete("/delete-post/:postId", protectRoute, deletePost);
+router.post("/create", protectRoute, createPost);
+router.delete("/delete/:postId", protectRoute, deletePost);
 router.get("/get-one/:postId", protectRoute, getPostById);
 router.get("/get-all", protectRoute, getAllPosts);
 router.get("/get-following-posts", protectRoute, getFollowingPosts);
