@@ -2,7 +2,7 @@
 # Authentication API
 
 ## 1. Register
-- **URL**: `/api/auth/register`
+- **URL**: `/api/auth/signup`
 - **Method**: POST
 - **Description**: Register a new user.
 - **Request Body**:
