@@ -109,7 +109,7 @@ export const loginController = async (req, res) => {
     //>>====Final Login success response========>>
     return res.status(200).json({
       success: true,
-      message: "User logged in successfully",
+      message: `Welcome back ${user.name}`,
       data: user,
     });
   } catch (error) {

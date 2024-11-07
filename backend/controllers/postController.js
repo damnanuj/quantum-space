@@ -129,7 +129,79 @@ export const deletePost = async (req, res) => {
   }
 };
 
-// >>================= Add Comment Controller ===================>>
+// >>=========== Like/Unlike Post +notification ===========>>
+export const likeUnlikePost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const userId = req.user._id;
+
+    // >>==== Validate the Post ID =====>
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid post ID",
+        message: "The provided post ID is not valid.",
+      });
+    }
+
+    // >>======= Fetch the Post by ID =======>
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Post not found",
+      });
+    }
+
+    const userHasLiked = post.likes.includes(userId);
+
+    //>>===based on the like unlike status===>>
+    const updateOperation = userHasLiked
+      ? { $pull: { likes: userId } }
+      : { $addToSet: { likes: userId } };
+
+    await Post.updateOne({ _id: postId }, updateOperation);
+
+    // >>==user's likedPosts array===>>
+    const userUpdateOperation = userHasLiked
+      ? { $pull: { likedPosts: postId } }
+      : { $addToSet: { likedPosts: postId } };
+
+    await User.updateOne({ _id: userId }, userUpdateOperation);
+
+    //>>=== send notification of liked post===>>
+    if (!userHasLiked) {
+      const user = await User.findById(userId);
+      const newNotification = new Notification({
+        from: userId,
+        to: post.user,
+        type: "like",
+        content: `${user.username} liked your post.`,
+      });
+      await newNotification.save();
+    }
+
+    //>>===updated like count====>>
+    const updatedLikeCount = userHasLiked
+      ? post.likes.length - 1
+      : post.likes.length + 1;
+
+    return res.status(200).json({
+      success: true,
+      message: userHasLiked ? "Post Unliked!" : "Post Liked!",
+      likesCount: updatedLikeCount,
+    });
+  } catch (error) {
+    console.error("Error in likeUnlikePost:", error.message);
+    return res.status(500).json({
+      success: false,
+      error: "Internal server error",
+      message: error.message,
+    });
+  }
+};
+
+// >>================= Add Comment to Post ===================>>
 export const addComment = async (req, res) => {
   try {
     const { comment } = req.body;
@@ -250,6 +322,7 @@ export const getAllPosts = async (req, res) => {
     if (posts.length === 0) {
       return res.status(200).json({
         success: true,
+        count :posts.length,
         message: "No posts found",
       });
     }
@@ -262,6 +335,7 @@ export const getAllPosts = async (req, res) => {
         currentPage: page,
         postsPerPage: limit,
       },
+      count: posts.length,
       data: posts,
     });
   } catch (error) {
@@ -274,70 +348,103 @@ export const getAllPosts = async (req, res) => {
   }
 };
 
-// >>=========== Like/Unlike Post +notification ===========>>
-export const likeUnlikePost = async (req, res) => {
+// // >>=========== Get User's Posts =============>>
+// export const getUserPosts = async (req, res) => {
+//   try {
+//     const { username } = req.params;
+
+//     // >>============ Find User in DB by Username ===========>>
+//     const user = await User.findOne({ username }).select("-password");
+//     if (!user) {
+//       return res.status(404).json({
+//         success: false,
+//         error: "User Not Found",
+//         message: "The specified user could not be found.",
+//       });
+//     }
+
+//     // >>============ Fetch User's Posts ===========>>
+//     const userPosts = await Post.find({ user: user._id })
+//       .sort({ createdAt: -1 }) 
+//       .populate({
+//         path: "user",
+//         select: "username profilePicture", 
+//       })
+//       .populate({
+//         path: "comments.user", 
+//         select: "username profilePicture", 
+//       })
+//       .select("content image likes comments createdAt") 
+//       .lean(); 
+
+//     // >>============ Return the User's Posts ===========>>
+//     return res.status(200).json({
+//       success: true,
+//       message: "Fetched user's posts successfully.",
+//       length: userPosts.length,
+//       data: userPosts,
+//     });
+
+//   } catch (error) {
+//     console.error("Error in getUserPosts Controller:", error.message);
+//     return res.status(500).json({
+//       success: false,
+//       error: "Internal server error",
+//       message: error.message,
+//     });
+//   }
+// };
+
+
+// >>=========== Get posts of the current user is following =============>>
+export const getFollowingPosts = async (req, res) => {
   try {
-    const { postId } = req.params;
     const userId = req.user._id;
 
-    // >>==== Validate the Post ID =====>
-    if (!mongoose.Types.ObjectId.isValid(postId)) {
-      return res.status(400).json({
-        success: false,
-        error: "Invalid post ID",
-        message: "The provided post ID is not valid.",
-      });
-    }
-
-    // >>======= Fetch the Post by ID =======>
-    const post = await Post.findById(postId);
-    if (!post) {
+    // >>============ Find User in DB by ID ===========>>
+    const user = await User.findById(userId).select("-password");
+    if (!user) {
       return res.status(404).json({
         success: false,
-        message: "Post not found",
+        error: "User Not Found",
+        message: "The specified user could not be found.",
       });
     }
 
-    const userHasLiked = post.likes.includes(userId);
+    // >>============ Fetch posts by followed users ===========>>
+    const followings = user.following;
+    const followingPosts = await Post.find({ user: { $in: followings } })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "user",
+        select: "username profilePicture", 
+      })
+      .populate({
+        path: "comments.user", 
+        select: "username profilePicture", 
+      })
+      .select("caption image likes comments createdAt")
+      .lean(); // for better performance since data is read-only
 
-    //>>===based on the like unlike status===>>
-    const updateOperation = userHasLiked
-      ? { $pull: { likes: userId } }
-      : { $addToSet: { likes: userId } };
-
-    await Post.updateOne({ _id: postId }, updateOperation);
-
-    // >>==user's likedPosts array===>>
-    const userUpdateOperation = userHasLiked
-      ? { $pull: { likedPosts: postId } }
-      : { $addToSet: { likedPosts: postId } };
-
-    await User.updateOne({ _id: userId }, userUpdateOperation);
-
-    //>>=== send notification of liked post===>>
-    if (!userHasLiked) {
-      const user = await User.findById(userId);
-      const newNotification = new Notification({
-        from: userId,
-        to: post.user,
-        type: "like",
-        content: `${user.username} liked your post.`,
+      // >>==== Handle Empty Posts Case ====>>
+    if (followingPosts.length === 0) {
+      return res.status(200).json({
+        success: true,
+        count :followingPosts.length,
+        message: "No posts found",
       });
-      await newNotification.save();
     }
 
-    //>>===updated like count====>>
-    const updatedLikeCount = userHasLiked
-      ? post.likes.length - 1
-      : post.likes.length + 1;
 
     return res.status(200).json({
       success: true,
-      message: userHasLiked ? "Post Unliked!" : "Post Liked!",
-      likesCount: updatedLikeCount,
+      message: "Fetched posts from followed users successfully.",
+      count:followingPosts.length,
+      data: followingPosts,
     });
+
   } catch (error) {
-    console.error("Error in likeUnlikePost:", error.message);
+    console.error("Error in getFollowingPosts:", error.message);
     return res.status(500).json({
       success: false,
       error: "Internal server error",
@@ -346,19 +453,55 @@ export const likeUnlikePost = async (req, res) => {
   }
 };
 
-// >>=========== get users liked posts ===========>>
+// >>=========== Get User's Liked Posts with Details ===========>>
 export const getLikedPosts = async (req, res) => {
   try {
     const { userId } = req.params;
 
-    //>>============Find user in Db==========>>
+    // >>============ Find User in DB by ID ===========>>
     const user = await User.findById(userId).select("-password");
     if (!user) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
         error: "User Not Found",
         message: "The specified user could not be found.",
       });
     }
-  } catch (error) {}
+
+    // >>============ Retrieve Liked Posts with Details ===========>>
+    const likedPosts = await Post.find({ _id: { $in: user.likedPosts } })
+      .populate({
+        path: "user", // Author of the post
+        select: "username profilePicture",
+      })
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user", // Populate commenter details
+          select: "username profilePicture",
+        },
+      })
+      .select("caption image likes comments createdAt")
+      .lean();
+
+    // >>============ Add Like Count to Each Post ===========>>
+    const likedPostsWithCount = likedPosts.map((post) => ({
+      ...post,
+      likeCount: post.likes.length,
+    }));
+
+    // >>=========== Response with Detailed Liked Posts ===========>>
+    return res.status(200).json({
+      success: true,
+      message: "Liked posts retrieved successfully.",
+      likedPosts: likedPostsWithCount,
+    });
+  } catch (error) {
+    console.error("Error in getLikedPosts:", error.message);
+    return res.status(500).json({
+      success: false,
+      error: "Internal server error",
+      message: error.message,
+    });
+  }
 };

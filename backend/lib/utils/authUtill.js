@@ -5,6 +5,14 @@ export const regexPatterns = {
   password: /^(?=.*[a-z])(?=.*[A-Z])[A-Za-z]{6,}$/, 
 };
 
+// export const regexPatterns = {
+//   name: /^[a-zA-Z\s]+$/,
+//   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+//   username: /^[a-zA-Z0-9]{3,15}$/,
+//   password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/, 
+// };
+
+
 export const userDataValidation = async ({ name, username, email, password }) => {
   // Trim the input fields
   name = name?.trim();

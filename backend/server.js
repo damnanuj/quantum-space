@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import { v2 as cloudinary } from "cloudinary";
 
 // >>============File Imports=========>>
@@ -8,12 +9,22 @@ import authRoutes from "./routes/authRoute.js";
 import homeRoutes from "./routes/homeRoute.js";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
 
 import { connectMongoDb } from "./db/connectMongoDb.js";
 
 dotenv.config();
 
 const app = express();
+
+// Configure CORS
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 const PORT = process.env.PORT || 8000;
 
@@ -32,6 +43,7 @@ app.use("/", homeRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 app.listen(PORT, () => {
   console.log(`Quantum Server is Running on http://localhost:${PORT}`);

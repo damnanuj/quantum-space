@@ -8,6 +8,7 @@ export const generateTokenAndSetCookie = (user, res) => {
     { expiresIn: "3d" }
   );
 
+
   // Set the cookie with the token
   res.cookie("quantum-space", token, {
     httpOnly: true,
