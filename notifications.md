@@ -1,17 +1,17 @@
-# Rewriting the Notifications API Documentation in a .txt file format without Bearer Authorization since the JWT is stored in cookies.
 
-notifications_txt_content_updated = """
-Notifications API Documentation
+
+
+# Notifications API Documentation
 ===============================
 
 This document provides details on the available endpoints for managing notifications within the QuantumsSpace platform. Users can fetch notifications and delete individual or all notifications. Each route is protected by an authentication middleware that verifies the JWT token stored in cookies.
 
 ----------------------------------------------------------
 
-Endpoints
+## Endpoints
 ---------
 
-1. **Get Notifications**
+### 1. **Get Notifications**
 
    - **Endpoint**: GET /api/notifications/
    - **Description**: Fetches all notifications for the authenticated user. Notifications are sorted by the latest and will be marked as "read" upon retrieval.
@@ -50,7 +50,7 @@ Endpoints
 
 ----------------------------------------------------------
 
-2. **Delete Notifications**
+### 2. **Delete Notifications**
 
    - **Endpoint**: DELETE /api/notifications/delete/:notificationId
    - **Description**: Deletes a specific notification by ID or, if no ID is provided, deletes all notifications for the user.
@@ -91,7 +91,7 @@ Endpoints
 
 ----------------------------------------------------------
 
-Notes
+## Notes
 -----
 
 - All responses follow a JSON structure with a success status, message, and relevant data or error information.
