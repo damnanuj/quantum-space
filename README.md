@@ -3,6 +3,10 @@
 
 Quantum Space is a social media platform where users can post updates, interact with each other, and stay informed through notifications. This documentation provides a comprehensive guide on how to interact with Quantum-Space's API endpoints for authentication, posts, notifications, and user management.
 
+![image](https://github.com/user-attachments/assets/435e56f6-c669-4eb4-ab3e-f60c3e753e5b)
+![image](https://github.com/user-attachments/assets/8959c715-e52a-48e1-8510-95de1e01156d)
+
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
