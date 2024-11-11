@@ -118,45 +118,58 @@ export const followUnfollowUser = async (req, res) => {
   }
 };
 
-// >>================User Suggestions==================================>>
-export const getUserSuggestions = async (req, res) => {
-  try {
-    const loggedUserId = req.user._id; // ID of the authenticated user
-
-    //>>=======list of users that the logged user is already following==========>>
-    const userFollowedByMe = await User.findById(loggedUserId).select(
-      "following"
-    );
-    const followingIds = userFollowedByMe.following.map((user) =>
-      user.toString()
-    );
-
-    // >>==============To exclude myself from suggestions==========>>
-    followingIds.push(loggedUserId.toString());
-
-    // >>========Find users that the logged user is not following =====>>
-    const suggestedUsers = await User.find({
-      _id: { $nin: followingIds }, //>>=== exclude those userIds==>>
-    })
-      .select("name username profilePicture about") // Include only necessary fields
-      .limit(10); //10 results
-
-    // >>=======Final suggestions data==========>>
-    res.status(200).json({
-      success: true,
-      count : suggestedUsers.length,
-      data: suggestedUsers,
-      message: "User suggestions fetched successfully",
-    });
-  } catch (error) {
-    console.log("Error in userSuggestions Controller:", error.message);
-    return res.status(500).json({
-      success: false,
-      error: "Internal server error",
-      message: error.message,
-    });
-  }
-};
+// >>================User Suggestions with Pagination=========================>
+  export const getUserSuggestions = async (req, res) => {
+    try {
+      const loggedUserId = req.user._id; // ID of the authenticated user
+  
+    
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 5; 
+  
+      // Calculate the number of items to skip based on the current page
+      const skip = (page - 1) * limit;
+  
+      // >>=======List of users that the logged user is already following==========>
+      const userFollowedByMe = await User.findById(loggedUserId).select("following");
+      const followingIds = userFollowedByMe.following.map((user) => user.toString());
+  
+      // >>==============To exclude myself from suggestions================>
+      followingIds.push(loggedUserId.toString());
+  
+      // >>========Find users that the logged user is not following with pagination=====>
+      const suggestedUsers = await User.find({
+        _id: { $nin: followingIds }, // Exclude those userIds
+      })
+        .select("name username profilePicture about gender") // Include only necessary fields
+        .skip(skip)
+        .limit(limit);
+  
+      // >>=======Calculate total count of suggestions without pagination for reference=========>
+      const totalSuggestions = await User.countDocuments({
+        _id: { $nin: followingIds },
+      });
+  
+      // >>=======Final suggestions data with pagination details==========>
+      res.status(200).json({
+        success: true,
+        count: suggestedUsers.length,
+        totalSuggestions,
+        currentPage: page,
+        totalPages: Math.ceil(totalSuggestions / limit),
+        message: "User suggestions fetched successfully",
+        data: suggestedUsers,
+      });
+    } catch (error) {
+      console.log("Error in getUserSuggestions Controller:", error.message);
+      return res.status(500).json({
+        success: false,
+        error: "Internal server error",
+        message: error.message,
+      });
+    }
+  };
+  
 
 // >>================Update User Profile==================================>>
 export const updateUserProfile = async (req, res) => {

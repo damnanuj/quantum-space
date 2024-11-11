@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-// Function to generate token and set cookie
+//>>====== Function to generate token and set cookie=====>>
 export const generateTokenAndSetCookie = (user, res) => {
   const token = jwt.sign(
     { userId: user._id, role: user.role, username: user.username }, 

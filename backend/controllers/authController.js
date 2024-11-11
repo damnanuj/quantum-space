@@ -1,6 +1,8 @@
 import User from "../models/userModel.js";
-import { userDataValidation } from "../lib/utils/authUtill.js";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+
+import { userDataValidation } from "../lib/utils/authUtill.js";
 import { generateTokenAndSetCookie } from "../lib/utils/generateToken.js";
 
 //=======================signup Controller==============================
@@ -52,14 +54,14 @@ export const signupController = async (req, res) => {
       console.error("Token generation failed:", tokenError.message);
       return res.status(201).json({
         success: true,
-        message: "User registered successfully. Please log in manually.",
+        message: "User registered successfully.",
         error: tokenError.message,
       });
     }
     // =====return final response json=====>>
     return res.status(201).json({
       success: true,
-      message: "User Registered Successfully",
+      message: "User registered successfully. Please log in manually.",
     });
   } catch (error) {
     console.log("Error in Signup Controller :", error.message);
@@ -102,7 +104,7 @@ export const loginController = async (req, res) => {
         message: "Invalid email or password", // Single error message for both cases
       });
     }
-      user.password = undefined;
+    user.password = undefined;
     //>>==== generate token and set cookie =======>
     generateTokenAndSetCookie(user, res);
 
@@ -146,3 +148,5 @@ export const logoutController = (req, res) => {
     });
   }
 };
+
+

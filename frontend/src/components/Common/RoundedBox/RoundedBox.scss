@@ -1,0 +1,23 @@
+@import "../../../colors.scss";
+
+.roundedBox{
+    
+    border:1px solid $dark-extra-light-color;
+    display: flex;
+    align-items: center;
+    color: $dark-text-color;
+    gap: 5px;
+    justify-content: center;
+    width: 120px;
+   
+    padding: 7px 0;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+.roundedBox:hover{
+    cursor: pointer;
+
+    background-color: $dark-extra-light-color;
+}

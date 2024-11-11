@@ -1,0 +1,23 @@
+@import "../../../colors.scss";
+
+.UsersToFollow_container{
+    color: $dark-text-color;
+    padding: 1rem;
+  width: 100%;
+  
+  border-radius: 20px;
+  background-color: $dark-light-color;
+  
+  h3{
+    margin-bottom: 12px;
+  }
+}
+
+.load-more-container{
+  text-align: center;
+  p{
+    color: $dark-notification-color;
+    font-weight: 700;
+    cursor: pointer;
+  }
+}

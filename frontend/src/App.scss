@@ -1,0 +1,16 @@
+@import "./colors.scss";
+
+.commonCard{
+    background-color: $dark-light-color;
+    width: 100%;
+    border-radius: 20px;
+    padding: 1rem;
+  }
+
+  .ant-notification-notice{
+    padding: 10px 12px !important;
+    background: $dark-text-color;
+   
+  }
+
+  
