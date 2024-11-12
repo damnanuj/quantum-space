@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./DashboardContainer.scss";
+import "./FeedContainer.scss";
 
 import UsersToFollow from "../Common/UsersToFollow/UsersToFollow";
 import PostBlog from "../FeedComponents/PostBlog/PostBlog";
@@ -10,7 +10,7 @@ import SmallProfile from "../Common/smallProfile/SmallProfile";
 
 
 
-const DashboardContainer = () => {
+const FeedContainer = () => {
   return (
     <div className="main_dashboard">
       <div className="left_dashboard">
@@ -27,4 +27,4 @@ const DashboardContainer = () => {
   );
 };
 
-export default DashboardContainer;
+export default FeedContainer;

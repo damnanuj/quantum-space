@@ -19,7 +19,7 @@ const LoginForm = () => {
     try {
       const {success, data} = await loginApi(loginFormData);
       if (success) {
-        navigate("/dashboard");
+        navigate("/feed");
         login(data.username)
       } 
     } catch (error) {

@@ -11,6 +11,7 @@ export const userEndpoints = {
   getUser: (username) => `${baseUrl}/users/profile/${username}`,
   getSuggestions: `${baseUrl}/users/suggestions`,
   followUnfollow: (userId) => `${baseUrl}/users/followUnfollow/${userId}`,
+  updateProfileDetails: `${baseUrl}/users/update-profile`,
 };
 
 export const postsEnpoints = {

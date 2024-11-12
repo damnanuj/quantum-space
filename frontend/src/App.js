@@ -10,7 +10,7 @@ import Loader from "./components/Common/Loader/Loader";
 const Homepage = lazy(() => import("./pages/Homepage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const SignupPage = lazy(() => import("./pages/SignupPage"));
-const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Feed = lazy(() => import("./pages/FeedPage"));
 const WrongRoute = lazy(() => import("./pages/WrongRoute"));
 
 function App() {
@@ -24,11 +24,11 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<LoadingWrapper Component={Homepage} />} />
-          <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" /> : <LoadingWrapper Component={LoginPage} />} />
-          <Route path="/signup" element={isLoggedIn ? <Navigate to="/dashboard" /> : <LoadingWrapper Component={SignupPage} />} />
+          <Route path="/login" element={isLoggedIn ? <Navigate to="/feed" /> : <LoadingWrapper Component={LoginPage} />} />
+          <Route path="/signup" element={isLoggedIn ? <Navigate to="/feed" /> : <LoadingWrapper Component={SignupPage} />} />
 
           {/* Private Route */}
-          <Route path="/dashboard" element={isLoggedIn ? <LoadingWrapper Component={Dashboard} /> : <Navigate to="/login" />} />
+          <Route path="/feed" element={isLoggedIn ? <LoadingWrapper Component={Feed} /> : <Navigate to="/login" />} />
 
           {/* Fallback Route */}
           <Route path="*" element={<LoadingWrapper Component={WrongRoute} />} />
