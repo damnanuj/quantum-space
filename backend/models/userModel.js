@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
       required: true,
+      enum: ["male", "female"],
     },
     location: {
       city: {
@@ -138,6 +139,29 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+/*>>== Middleware to set 
+default profilePicture and coverPicture 
+based on gender ===>>*/
+
+userSchema.pre("save", function (next) {
+  if (this.isNew) {
+    // Set default profile picture based on gender
+    if (this.gender === "female" && !this.profilePicture) {
+      this.profilePicture =
+        "https://cdn-icons-png.freepik.com/512/1912/1912051.png?ga=GA1.1.697858611.1715864602";
+    } else if (this.gender === "male" && !this.profilePicture) {
+      this.profilePicture =
+        "https://cdn-icons-png.freepik.com/512/1912/1912097.png?ga=GA1.1.697858611.1715864602";
+    }
+
+    if (!this.coverPicture) {
+      this.coverPicture =
+        "https://i0.wp.com/nftartwithlauren.com/wp-content/uploads/2024/01/laurenmcdonaghpereiraphoto_A_beach_sunset_with_a_horseback_ri_db01a57e-5be8-4887-9d40-80528f1d2ca4_1.png?fit=1024%2C574&ssl=1";
+    }
+  }
+  next();
+});
 
 const User = mongoose.model("User", userSchema);
 export default User;

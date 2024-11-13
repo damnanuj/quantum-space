@@ -19,7 +19,7 @@ const Header = () => {
       </div>
 
       <div className="header_right">
-        <Link to={"/dashboard"}>
+        <Link to={"/feed"}>
           <HomeRoundedIcon className="home" />
         </Link>
 

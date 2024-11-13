@@ -9,7 +9,8 @@
     justify-content: center;
     align-items: center;
     padding: 1rem;
-    gap: 10px;
+    gap: 1rem;
+   color: #e66177;
     .postBlog_top{
         
         display: flex;
@@ -38,8 +39,10 @@
         }
     }
     .postBlog_bottom{
+        width: 100%;
         display: flex;
         align-items: center;
+      
         gap: 7px;
        
     }

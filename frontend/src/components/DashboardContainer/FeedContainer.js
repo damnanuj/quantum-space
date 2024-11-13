@@ -5,6 +5,7 @@ import "./FeedContainer.scss";
 import UsersToFollow from "../Common/UsersToFollow/UsersToFollow";
 import PostBlog from "../FeedComponents/PostBlog/PostBlog";
 import SmallProfile from "../Common/smallProfile/SmallProfile";
+import FeedTabs from "../FeedComponents/Tabs/FeedTabs";
 
 
 
@@ -18,7 +19,7 @@ const FeedContainer = () => {
       </div>
       <div className="middle_dashboard">
         <PostBlog />
-        
+        <FeedTabs/>
       </div>
       <div className="right_dashboard">
         <UsersToFollow />

@@ -29,7 +29,7 @@ const UsersToFollow = () => {
 
   useEffect(() => {
     fetchSuggestions(pageNumber);
-  }, []);
+  });
 
   const loadMoreSuggestions = () => {
     if (pageNumber < pages && !isLoading) {
@@ -51,7 +51,6 @@ const UsersToFollow = () => {
               profileImg={user.profilePicture}
               name={user.name}
               username={user.username}
-              gender={user.gender}
             />
           ))}
 

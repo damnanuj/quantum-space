@@ -1,16 +1,13 @@
 import React, { useContext } from "react";
 import "./SmallProfile.scss";
-import profileMale from "../../../imgs/profilemale.png";
-import profileFemale from "../../../imgs/profilefemale.png";
-import coverPhoto from "../../../imgs/coverImg.jpg";
+
+
 import { AuthContext } from "../../../context/AuthContext";
 
 import SmallProfileSkeleton from "../../../skeletons/SmallProfileSkeleton";
 
 const SmallProfile = () => {
   const { userDetails: user } = useContext(AuthContext);
-
- 
 
   // Skeleton fallback UI while loading
   if (!user) {
@@ -24,7 +21,7 @@ const SmallProfile = () => {
         <div
           className="cover-photo"
           style={{
-            backgroundImage: `url(${user.coverPicture || coverPhoto})`,
+            backgroundImage: `url(${user.coverPicture})`,
           }}
         />
 
@@ -32,13 +29,7 @@ const SmallProfile = () => {
         <div className="logo_holder">
           <img
             className="maleProfile"
-            src={
-              user.profilePicture
-                ? user.profilePicture
-                : user.gender === "male"
-                ? profileMale
-                : profileFemale
-            }
+            src={user.profilePicture}
             alt={`${user.username || "User"}'s profile`}
           />
         </div>

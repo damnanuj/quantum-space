@@ -1,13 +1,12 @@
 import React from "react";
-import profileMale from "../../../imgs/profilemale.png";
-import profileFemale from "../../../imgs/profilefemale.png";
+
 import "./UsersList.scss";
 
-const UsersList = ({ name, username, gender, profileImg }) => {
+const UsersList = ({ name, username, profileImg }) => {
   return (
     <div className="UsersList_container">
       <img
-        src={profileImg || gender === "male" ? profileMale : profileFemale}
+        src={profileImg}
         alt="userProfile"
       />
       <div className="nameUsername">
