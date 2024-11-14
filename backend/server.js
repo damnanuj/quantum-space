@@ -20,7 +20,7 @@ const app = express();
 // Configure CORS
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://quantum-space.onrender.com",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
