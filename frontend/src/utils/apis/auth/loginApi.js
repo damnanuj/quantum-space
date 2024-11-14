@@ -23,6 +23,7 @@ export async function loginApi(loginFormData) {
 
     return { success: success || true, data };
   } catch (error) {
+    console.log(error);
     const errorMessage =
       error.response?.data?.message || "An unexpected error occurred";
     const errorSuccess = error.response?.data?.success || false;
