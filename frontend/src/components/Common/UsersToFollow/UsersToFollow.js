@@ -5,7 +5,7 @@ import UsersList from "../UsersList/UsersList";
 import SuggestionsSkeleton from "../../../skeletons/SuggestionsSkeleton";
 import { getUserSuggestions } from "../../../utils/apis/users/getUserSuggestions";
 
-const UsersToFollow = () => {
+const  UsersToFollow = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
@@ -29,7 +29,7 @@ const UsersToFollow = () => {
 
   useEffect(() => {
     fetchSuggestions(pageNumber);
-  });
+  },[pageNumber]);
 
   const loadMoreSuggestions = () => {
     if (pageNumber < pages && !isLoading) {

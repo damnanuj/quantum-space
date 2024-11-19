@@ -1,14 +1,13 @@
 import React, { useContext } from "react";
 import "./SmallProfile.scss";
-
-
 import { AuthContext } from "../../../context/AuthContext";
+
 
 import SmallProfileSkeleton from "../../../skeletons/SmallProfileSkeleton";
 
 const SmallProfile = () => {
+  
   const { userDetails: user } = useContext(AuthContext);
-
   // Skeleton fallback UI while loading
   if (!user) {
     return <SmallProfileSkeleton />;
