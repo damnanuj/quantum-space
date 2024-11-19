@@ -130,8 +130,8 @@ export const logoutController = (req, res) => {
   try {
     res.clearCookie("quantum-space", {
       httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
+      // sameSite: "strict",
+      // secure: process.env.NODE_ENV === "production",
     });
 
     // Send response

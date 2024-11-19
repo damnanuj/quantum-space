@@ -13,7 +13,7 @@ export const generateTokenAndSetCookie = (user, res) => {
   res.cookie("quantum-space", token, {
     httpOnly: true,
     maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
-    sameSite: "strict",
-    secure: process.env.NODE_ENV === "production", // Set 'secure' in production
+    // sameSite: "strict",
+    // secure: process.env.NODE_ENV === "production", // Set 'secure' in production
   });
 };
