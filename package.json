@@ -5,8 +5,8 @@
   "main": "backend/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon backend/server.js",
-    "start": "nodemon backend/server.js"
+    "dev": "cross-env NODE_ENV=development nodemon backend/server.js",
+    "start": "cross-env NODE_ENV=production nodemon backend/server.js"
   },
   "author": "damnanuj",
   "type": "module",
@@ -24,6 +24,7 @@
     "vite": "^5.4.10"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^3.1.7"
   }
 }
