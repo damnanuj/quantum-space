@@ -20,11 +20,15 @@ const app = express();
 // Configure CORS
 app.use(
   cors({
-    origin: ["http://localhost:3000","https://quantum-space-damnanuj.vercel.app/"],
+    origin: [
+      "http://localhost:3000",
+      "https://quantum-space-damnanuj.vercel.app/",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
+app.options("*", cors());
 
 const PORT = process.env.PORT || 8000;
 
@@ -44,7 +48,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications", notificationRoutes);
-
 
 app.listen(PORT, () => {
   console.log(`Quantum Server is Running on http://localhost:${PORT}`);

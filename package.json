@@ -5,8 +5,8 @@
   "main": "backend/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env NODE_ENV=development nodemon backend/server.js",
-    "start": "cross-env NODE_ENV=production nodemon backend/server.js"
+    "dev": "nodemon backend/server.js",
+    "start": "nodemon backend/server.js"
   },
   "author": "damnanuj",
   "type": "module",
@@ -20,8 +20,7 @@
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
     "mailtrap": "^3.4.0",
-    "mongoose": "^8.7.2",
-    "vite": "^5.4.10"
+    "mongoose": "^8.7.2"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

@@ -9,7 +9,7 @@ import Notification from "../models/notficationModel.js";
 export const createPost = async (req, res) => {
   try {
     const { caption, image: rawImage } = req.body;
-    const userId = req.user._id;
+    const userId = req.user.userId;
 
     //>>============Find user in Db==========>>
     const user = await User.findById(userId).select("-password");
@@ -87,7 +87,7 @@ export const deletePost = async (req, res) => {
     }
 
     // >>====post belongs to authenticated user or not! =====>>
-    if (post.user.toString() !== req.user._id.toString()) {
+    if (post.user.toString() !== req.user.userId.toString()) {
       return res.status(401).send({
         success: false,
         message: "You are not authorized to delete this post!",
@@ -133,7 +133,7 @@ export const deletePost = async (req, res) => {
 export const likeUnlikePost = async (req, res) => {
   try {
     const { postId } = req.params;
-    const userId = req.user._id;
+    const userId = req.user.userId;
 
     // >>==== Validate the Post ID =====>
     if (!mongoose.Types.ObjectId.isValid(postId)) {
@@ -205,7 +205,7 @@ export const likeUnlikePost = async (req, res) => {
 export const addComment = async (req, res) => {
   try {
     const { comment } = req.body;
-    const userId = req.user._id;
+    const userId = req.user.userId;
     const postId = req.params.postId;
 
     // >>==== Validate the post ID =====>>
@@ -399,7 +399,7 @@ export const getAllPosts = async (req, res) => {
 // >>=========== Get posts of the current user is following =============>>
 export const getFollowingPosts = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user.userId;
 
     // >>============ Find User in DB by ID ===========>>
     const user = await User.findById(userId).select("-password");

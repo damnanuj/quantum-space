@@ -1,6 +1,5 @@
 import express from "express";
-import protectRoute from "../lib/middleware/protectRoute.js";
-
+import { authenticateToken } from "../lib/middleware/authenticateToken.js";
 
 // >>=====User controllers Imports============>>
 import {
@@ -10,12 +9,15 @@ import {
   updateUserProfile,
 } from "../controllers/userController.js";
 
-
 const router = express.Router();
 
-router.get("/profile/:username", protectRoute, getUserProfile);
-router.get("/suggestions", protectRoute, getUserSuggestions);
-router.get("/followUnfollow/:targetUserId", protectRoute, followUnfollowUser);
-router.post("/update-profile", protectRoute, updateUserProfile);
+router.get("/profile/:username", authenticateToken, getUserProfile);
+router.get("/suggestions", authenticateToken, getUserSuggestions);
+router.get(
+  "/followUnfollow/:targetUserId",
+  authenticateToken,
+  followUnfollowUser
+);
+router.post("/update-profile", authenticateToken, updateUserProfile);
 
 export default router;

@@ -1,5 +1,5 @@
 import express from "express";
-import protectRoute from "../lib/middleware/protectRoute.js";
+import { authenticateToken } from "../lib/middleware/authenticateToken.js";
 
 
 import {
@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.get("/", protectRoute, getNotifications);
-router.delete("/delete/:notificationId", protectRoute, deleteNotifications);
+router.get("/", authenticateToken, getNotifications);
+router.delete("/delete/:notificationId", authenticateToken, deleteNotifications);
 
 export default router;

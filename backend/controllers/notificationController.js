@@ -3,7 +3,7 @@ import Notification from "../models/notficationModel.js";
 // >>=========== Get Notifications for the User =============>>
 export const getNotifications = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user.userId;
 
     // >>============ Fetch Notifications ===========>>
     const notifications = await Notification.find({ to: userId })
@@ -41,7 +41,7 @@ export const getNotifications = async (req, res) => {
 // >>=========== Delete Notifications for the User =============>>
 export const deleteNotifications = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user.userId;
     const { notificationId } = req.params;
 
     // >>============ Single or Bulk Deletion ===========>>

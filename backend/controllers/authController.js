@@ -1,9 +1,9 @@
 import User from "../models/userModel.js";
-import jwt from "jsonwebtoken";
+
 import bcrypt from "bcryptjs";
 
 import { userDataValidation } from "../lib/utils/authUtill.js";
-import { generateTokenAndSetCookie } from "../lib/utils/generateToken.js";
+import { generateToken } from "../lib/utils/generateToken.js";
 
 //=======================signup Controller==============================
 export const signupController = async (req, res) => {
@@ -47,21 +47,15 @@ export const signupController = async (req, res) => {
     });
 
     await user.save();
-    //========= Generate token and set cookie after saving user ======>>
-    try {
-      generateTokenAndSetCookie(user, res);
-    } catch (tokenError) {
-      console.error("Token generation failed:", tokenError.message);
-      return res.status(201).json({
-        success: true,
-        message: "User registered successfully.",
-        error: tokenError.message,
-      });
-    }
+    //========= Generate token after saving user ======>>
+ 
+    const token = generateToken(user);
+   
     // =====return final response json=====>>
     return res.status(201).json({
       success: true,
-      message: "User registered successfully. Please log in manually.",
+      token:token,
+      message: "User registered successfully.",
     });
   } catch (error) {
     console.log("Error in Signup Controller :", error.message);
@@ -105,12 +99,13 @@ export const loginController = async (req, res) => {
       });
     }
     user.password = undefined;
-    //>>==== generate token and set cookie =======>
-    generateTokenAndSetCookie(user, res);
+    //>>==== generate token  =======>
+      const token = generateToken(user);
 
     //>>====Final Login success response========>>
     return res.status(200).json({
       success: true,
+      token : token,
       message: `Welcome back ${user.name}`,
       data: user,
     });
@@ -131,6 +126,7 @@ export const logoutController = (req, res) => {
     res.clearCookie("quantum-space", {
       httpOnly: true,
       sameSite: "none",
+      secure:true,
       // sameSite: "strict",
       // secure: process.env.NODE_ENV === "production",
     });
