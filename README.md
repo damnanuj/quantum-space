@@ -1,5 +1,5 @@
-
-<img src="https://media.tenor.com/zzZZwwmB-6YAAAAM/warning.gif" width="50" /> Note: The frontend is still in progress and will be updated once it's done.
+<img src="https://media.tenor.com/zzZZwwmB-6YAAAAM/warning.gif" width="50" />
+⚠️ Note: The frontend is still in progress and will be updated once it's done.
 
 
 # Quantum-Space API Documentation
@@ -50,7 +50,7 @@ Each API module contains information on the routes, request methods, expected pa
 
 Happy coding with Quantum-Space!
 
-**Note:** The frontend is still in progress and will be updated once it's done.
+⚠️ **Note:** The frontend is still in progress and will be updated once it's done.
 
 
 ---
