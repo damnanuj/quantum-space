@@ -1,0 +1,65 @@
+
+@import "../../colors.scss";
+.css-16k4q1o-JoyDrawer-content{
+    background-color: $dark-main-color !important;
+    padding: 0.5rem;
+    gap: 1rem;
+    
+}
+.css-qblkrs-JoyDrawer-root{
+    --Drawer-horizontalSize: clamp(350px, 30%, 100%) !important;
+}
+
+.css-1jw7p1f-JoyDrawer-content{
+    background-color: $dark-main-color !important;
+}
+
+
+
+.profile_button {
+  padding: 2px 4px;
+
+  border-radius: 20px;
+  background-color: $dark-light-color;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: $dark-text-color;
+  img {
+    width: 35px;
+  }
+  
+}
+.postDropMenu{
+  color: $dark-text-color;
+}
+.MuiList-root {
+  .MuiSvgIcon-fontSizeMedium {
+    margin-right: 1rem !important;
+  }
+  .MuiSvgIcon-fontSizeSmall {
+    color: $dark-text-color;
+  }
+}
+
+.MuiIconButton-root {
+  margin-left: 0 !important;
+}
+.css-6hp17o-MuiList-root-MuiMenu-list {
+ 
+  background: $dark-light-color !important;
+  color: $dark-text-color;
+  
+  border-radius: 20px;
+  
+}
+.css-eqeipb-MuiPaper-root-MuiPopover-paper-MuiMenu-paper::before {
+  background-color: #1a2730 !important;
+}
+
+.css-eqeipb-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+  border-radius: 20px !important;
+  background-color: $dark-light-color !important;
+}
+

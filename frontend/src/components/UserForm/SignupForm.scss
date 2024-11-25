@@ -1,0 +1,161 @@
+@import "../../colors.scss";
+
+.signupFormContainer {
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background-color: $dark-main-color;
+  height: auto;
+  padding: 3rem;
+  .form {
+    background-color: $dark-light-color;
+   
+    border: 1px dotted rgba($dark-text-color, 0.3);
+    padding: 0 3rem 2rem 3rem;
+    border-radius: 10px;
+
+    width: min(550px, 95vw);
+    .loginLink{
+        text-align: center;
+        color: $dark-text-color;
+        a{
+            color: $dark-notification-color;
+        }
+    }
+    .formTop{
+        display: flex;
+        flex-direction: column;
+        
+        margin-bottom: 1.5rem;
+        align-items: center;
+        div{
+            margin-top: 1rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            gap: 10px;
+            
+            span{
+               
+                flex-grow: 1;
+                border: 1px dotted rgba($dark-text-color, 0.3);
+                
+            }
+            p{
+                color:rgba($dark-text-color, 0.3);
+            }
+        }
+    }
+    .heading {
+      text-align: center;
+      font-family: "Galada", cursive;
+      font-weight: 400;
+      font-size: 20px;
+      width: 100%;
+      color: $dark-text-color;
+    }
+    .spaceHeading{
+        width: 100%;
+        font-family: "Oregano", cursive;
+        text-align: center;
+        font-size: 80px;
+        color: $dark-notification-color;
+       
+    }
+    .welcomeText{
+        width: 100%;
+        text-align: center;
+       
+        color: $dark-notification-color
+    }
+    .ant-form-item {
+      margin-bottom: 12px;
+      .ant-form-item-label {
+        label {
+          font-weight: 500;
+
+          color: $dark-text-color;
+        }
+      }
+      .ant-input {
+        background-color: transparent;
+        border: 1px dotted rgba($dark-text-color, 0.3);
+        border-radius: 10px;
+        padding: 10px 20px;
+        color: $dark-text-color;
+
+        // Placeholder styling
+        &::placeholder {
+          color: $dark-text-color;
+          opacity: 0.5 !important; 
+        }
+
+        // Optional: Focus state for better visibility
+        &:focus {
+          border-color: $dark-notification-color; 
+        }
+      }
+      
+      .ant-input-affix-wrapper {
+        background-color: transparent;
+        border: 1px dotted rgba($dark-text-color, 0.3);
+
+        padding-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+
+        .ant-input {
+          border: none;
+        }
+        svg {
+          color: $dark-text-color;
+        }
+         // Focus state for the wrapper
+         &:focus-within {
+            border-color: $dark-notification-color; // Increase opacity for the border on focus
+            // box-shadow: 0 0 0 2px rgba($dark-notification-color, 0.2); // Add a focus shadow
+          }
+      }
+      
+    }
+
+    .ant-radio-wrapper{
+        span{
+            text-transform: uppercase;
+            color: $dark-text-color;
+        }
+    }
+    .formBtn{
+        background-color: $dark-notification-color;
+        transition: all 0.3s ease;
+        border: 1px solid$dark-notification-color;
+        font-size: 1rem;
+        font-weight: 500;
+       height: 40px;
+       margin-top: 10px;
+    }
+    .formBtn:hover{
+        background-color:transparent;
+        border: 1px dotted $dark-notification-color;
+    }
+  }
+}
+
+
+@media (max-width:"600px"){
+    .signupFormContainer{
+        padding: 1rem 0;
+       
+        .form{
+            padding: 0 1rem 1rem 1rem;
+        }
+        .spaceHeading{
+           
+            font-size: 60px !important;
+        }
+    }
+}

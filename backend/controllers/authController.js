@@ -48,13 +48,13 @@ export const signupController = async (req, res) => {
 
     await user.save();
     //========= Generate token after saving user ======>>
- 
+
     const token = generateToken(user);
-   
+
     // =====return final response json=====>>
     return res.status(201).json({
       success: true,
-      token:token,
+      token: token,
       message: "User registered successfully.",
     });
   } catch (error) {
@@ -100,12 +100,12 @@ export const loginController = async (req, res) => {
     }
     user.password = undefined;
     //>>==== generate token  =======>
-      const token = generateToken(user);
+    const token = generateToken(user);
 
     //>>====Final Login success response========>>
     return res.status(200).json({
       success: true,
-      token : token,
+      token: token,
       message: `Welcome back ${user.name}`,
       data: user,
     });
@@ -119,31 +119,19 @@ export const loginController = async (req, res) => {
   }
 };
 
-//====================logout Controller==========================>>
+//====================Logout Controller==========================>>
 export const logoutController = (req, res) => {
-  //=====Clear the authentication cookie=====>
   try {
-    res.clearCookie("quantum-space", {
-      httpOnly: true,
-      sameSite: "none",
-      secure:true,
-      // sameSite: "strict",
-      // secure: process.env.NODE_ENV === "production",
-    });
-
-    // Send response
     return res.status(200).json({
       success: true,
-      message: "Logout successful",
+      message: "Logout successful.",
     });
   } catch (error) {
-    console.log("Error in logout Controller :", error.message);
+    console.error("Error in logoutController:", error.message);
     return res.status(500).json({
       success: false,
-      error: "Internal server error",
-      message: error.message,
+      message: "An error occurred while logging out.",
+      error: error.message,
     });
   }
 };
-
-

@@ -1,0 +1,91 @@
+@import "../../../colors.scss";
+
+.header_container {
+  position: sticky;
+  top: 0;
+  background-color: $dark-header-color;
+  z-index: 9999;
+  // border: 1px solid yellow;
+  // border-bottom:  1px solid $dark-extra-light-color;
+  height: 65px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  box-shadow: 1px 1px 8px 1px $dark-main-color;
+  .header_left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    .logo {
+      font-family: "Oregano", cursive;
+
+      font-size: 35px;
+      color: $dark-notification-color;
+    }
+  }
+  .header_right {
+    // border: 1px solid red;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .home,
+    .notification,
+    .menu {
+      color: $dark-text-color;
+      font-size: 30px !important;
+    }
+  }
+  .menu {
+    color: white;
+  }
+}
+.explore_search {
+  width: 350px;
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: 1px solid $dark-extra-light-color;
+
+  color: #fafafa;
+  font-weight: 600;
+  font-size: 16px;
+  font-family: "Nunito";
+  background-color: $dark-light-color;
+  font-weight: 400;
+}
+.explore_search:focus {
+  outline: 1px solid $dark-notification-color;
+}
+
+.MobileDrawer {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .css-1ge85tx-MuiButtonBase-root-MuiIconButton-root {
+    padding: 0 !important;
+  }
+  .menu {
+    font-size: 1.8rem !important;
+  }
+
+  .logo {
+    font-size: 30px !important;
+  }
+  .MobileDrawer {
+    display: block;
+  }
+
+  .header_container {
+    padding: 0 1rem;
+    .explore_search {
+      display: none;
+    }
+  }
+  .home {
+    display: none !important;
+  }
+  .header_container .header_right {
+    gap: 8px;
+  }
+}

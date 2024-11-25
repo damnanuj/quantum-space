@@ -56,7 +56,7 @@ Happy coding with Quantum-Space!
 ---
 
 **Project Links**
-- **Authentication Documentation**: [auth.txt](auth.md)
-- **Posts Documentation**: [posts.txt](posts.md)
-- **Notifications Documentation**: [notifications.txt](notifications.md)
-- **User Documentation**: [user.txt](user.md)
+- **Authentication Documentation**: [auth.md](auth.md)
+- **Posts Documentation**: [posts.md](posts.md)
+- **Notifications Documentation**: [notifications.md](notifications.md)
+- **User Documentation**: [user.md](user.md)
