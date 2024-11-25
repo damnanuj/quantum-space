@@ -1,12 +1,8 @@
-// App.js
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { lazy, useEffect } from "react";
-
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { lazy, useEffect, useState } from "react";
 import "./App.scss";
-
 import LoadingWrapper from "./components/Common/LoadingWrapper/LoadingWrapper";
 import { isTokenValid } from "./utils/isTokenValid";
-import Header from "./components/Common/Header/Header";
 
 const Homepage = lazy(() => import("./pages/Homepage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
@@ -15,36 +11,38 @@ const Feed = lazy(() => import("./pages/FeedPage"));
 const WrongRoute = lazy(() => import("./pages/WrongRoute"));
 
 function App() {
+  const [isUserLogged, setIsUserLogged] = useState(null);
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (!isTokenValid()) {
-      console.log("unauthorized");
-      // localStorage.removeItem("quantum-space");
-      // window.location.href = "/login";
+      setIsUserLogged(false)
+    } else {
+      navigate("/feed")
+      setIsUserLogged(true);
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<LoadingWrapper Component={Homepage} />} />
-          <Route
-            path="/login"
-            element={<LoadingWrapper Component={LoginPage} />}
-          />
-          <Route
-            path="/signup"
-            element={<LoadingWrapper Component={SignupPage} />}
-          />
+      <Routes>
+        {/* Public Routes */}
+        {!isUserLogged && (
+          <>
+            <Route path="/" element={<LoadingWrapper Component={Homepage} />} />
+            <Route path="/login" element={<LoadingWrapper Component={LoginPage} />}/>
+            <Route path="/signup" element={<LoadingWrapper Component={SignupPage} />}/>
+          </>
+        )}
 
-          {/* Private Route */}
+        {/* Protected Routes */}
+        {isUserLogged && (
           <Route path="/feed" element={<LoadingWrapper Component={Feed} />} />
+         )}
 
-          {/* Fallback Route */}
-          <Route path="*" element={<LoadingWrapper Component={WrongRoute} />} />
-        </Routes>
-      </BrowserRouter>
+        {/* Fallback Route */}
+        <Route path="*" element={<LoadingWrapper Component={WrongRoute} />} />
+      </Routes>
     </div>
   );
 }

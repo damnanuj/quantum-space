@@ -99,8 +99,8 @@ const onFinishSignup = async (signupFormData) => {
           rules={[{ required: true, message: "Gender is required" }]}
         >
           <Radio.Group>
-            <Radio value="MALE">Male</Radio>
-            <Radio value="FEMALE">Female</Radio>
+            <Radio value="male">Male</Radio>
+            <Radio value="female">Female</Radio>
             {/* <Radio value="LGTV">Lgtv💩</Radio> */}
           </Radio.Group>
         </Form.Item>
