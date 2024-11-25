@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./SmallProfile.scss";
 
-
-
 import SmallProfileSkeleton from "../../../skeletons/SmallProfileSkeleton";
 import { Link } from "react-router-dom";
 import { fetchUserProfile } from "../../../utils/apis/feed/fetchUserProfile";
@@ -16,13 +14,15 @@ const SmallProfile = () => {
     const fetchProfile = async () => {
       try {
         const userProfile = await fetchUserProfile();
-       
+
         if (userProfile.success === false) {
           throw new Error(userProfile.message);
         }
         setUser(userProfile.data);
       } catch (err) {
-        setError(err.message || "An error occurred while fetching the profile.");
+        setError(
+          err.message || "An error occurred while fetching the profile."
+        );
       } finally {
         setLoading(false);
       }
@@ -31,7 +31,7 @@ const SmallProfile = () => {
     fetchProfile();
   }, []);
 
-  // Skeleton fallback UI 
+  // Skeleton fallback UI
   if (loading) {
     return <SmallProfileSkeleton />;
   }
@@ -42,7 +42,6 @@ const SmallProfile = () => {
 
   return (
     <div className="small_profile_container">
-      
       <div
         className="cover-photo"
         style={{

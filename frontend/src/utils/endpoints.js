@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:8000/api";
+const baseUrl = "https://quantum-space.onrender.com/api";
 
 export const authEndpoints = {
   signup: `${baseUrl}/auth/signup`,
