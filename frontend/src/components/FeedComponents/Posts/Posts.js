@@ -4,48 +4,64 @@ import PostSkeleton from "../../../skeletons/PostsSkeleton";
 import PostMenu from "../PostDropMenu/PostDropMenu";
 import { fetchAllPosts } from "../../../utils/apis/feed/fetchAllPosts";
 import { timeAgo } from "../../../utils/convertTimestamp";
-import { jwtDecode } from "jwt-decode";
 import { likeUnlikePost } from "../../../utils/apis/feed/likeUnlikePost";
 import { message } from "antd";
+import SeeMore from "../../Common/SeeMore/SeeMore";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pages, setPages] = useState(1);
+  const [newPostsLoading, setNewPostsLoading] = useState(false);
 
-  useEffect(() => {
-    const token = localStorage.getItem("quantum-space");
-    if (token) {
-      const {userId } = jwtDecode(token);
-      setLoggedInUser(userId);
-    }
+  // Fetch posts based on page number
+  const fetchPosts = async (page) => {
+    try {
+      setNewPostsLoading(true);
+      const { response, userId } = await fetchAllPosts(page);
 
-    const fetchBlogs = async () => {
-      try {
-        const allPosts = await fetchAllPosts();
-        setPosts(allPosts.data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
+      if (response.success) {
+        setPosts((prev) => [...prev, ...response.data]); // Append posts
+        setPages(response.totalPages); // Update total pages
+        setLoggedInUser(userId); // Save logged-in user
+      } else {
+        throw new Error(response.message || "Failed to fetch posts.");
       }
-    };
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+      setNewPostsLoading(false);
+    }
+  };
 
-    fetchBlogs();
+  // Initial fetch
+  useEffect(() => {
+    fetchPosts(1);
   }, []);
 
+  // Load more posts
+  const loadMorePosts = () => {
+    if (pageNumber < pages && !newPostsLoading) {
+      const nextPage = pageNumber + 1;
+      setPageNumber(nextPage); // Increment page number
+      fetchPosts(nextPage); // Fetch next page
+    }
+  };
 
+  // Handle like/unlike
   const handleLikeUnlike = async (postId) => {
-    // Optimistic UI update
     const updatedPosts = posts.map((post) => {
       if (post._id === postId) {
         const isLiked = post.likes.includes(loggedInUser);
         return {
           ...post,
           likes: isLiked
-            ? post.likes.filter((id) => id !== loggedInUser) // Unlike
-            : [...post.likes, loggedInUser], // Like
+            ? post.likes.filter((id) => id !== loggedInUser)
+            : [...post.likes, loggedInUser],
         };
       }
       return post;
@@ -56,12 +72,12 @@ const Posts = () => {
     try {
       await likeUnlikePost(postId);
     } catch (error) {
-      // Revert to original state in case of an error
-      setPosts(posts);
+      setPosts(posts); // Revert to original state on error
       message.error("Failed to like/unlike the post. Please try again.");
     }
   };
 
+  // Loading state
   if (loading) return <PostSkeleton loading={loading} />;
   if (error) return <p>Error loading blogs: {error.message}</p>;
 
@@ -100,6 +116,10 @@ const Posts = () => {
           </div>
         </div>
       ))}
+
+      {pageNumber < pages && (
+        <SeeMore loadMore={loadMorePosts} isLoading={newPostsLoading} />
+      )}
     </>
   );
 };

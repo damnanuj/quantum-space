@@ -303,27 +303,37 @@ export const getPostById = async (req, res) => {
 // >>=========== Get All Posts / also specific for userId =============>>
 export const getAllPosts = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 2;
+    const page = parseInt(req.query.page) || 1; // Current page number
+    const limit = parseInt(req.query.limit) || 5; // Posts per page
     const userId = req.query.userId;
 
     // >>==== Query Configuration ====>>
-    const query = userId ? { user: userId } : {}; // Filter by user if userId is provided
-    const skip = (page - 1) * limit; //number of documents to skip for pagination
+    const query = userId ? { user: userId } : {};
+    const skip = (page - 1) * limit;
 
     // >>==== Fetch Posts with Sorting and Pagination ====>>
     const posts = await Post.find(query)
       .populate("user", "-password") // Populate user info
-      .sort({ createdAt: -1 }) // most recent posts
+      .sort({ createdAt: -1 }) // Sort posts by most recent
       .skip(skip)
       .limit(limit);
+
+    // >>==== Total Number of Posts (Without Pagination) ====>>
+    const totalPosts = await Post.countDocuments(query); // Count total posts matching the query
+
+    // >>==== Calculate Total Pages ====>>
+    const totalPages = Math.ceil(totalPosts / limit);
 
     // >>==== Handle Empty Posts Case ====>>
     if (posts.length === 0) {
       return res.status(200).json({
         success: true,
-        count :posts.length,
+        count: posts.length,
+        totalPosts,
+        currentPage: page,
+        totalPages,
         message: "No posts found",
+        data: [],
       });
     }
 
@@ -331,11 +341,10 @@ export const getAllPosts = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Posts fetched successfully",
-      pagination: {
-        currentPage: page,
-        postsPerPage: limit,
-      },
       count: posts.length,
+      totalPosts,
+      currentPage: page,
+      totalPages,
       data: posts,
     });
   } catch (error) {
@@ -365,17 +374,17 @@ export const getAllPosts = async (req, res) => {
 
 //     // >>============ Fetch User's Posts ===========>>
 //     const userPosts = await Post.find({ user: user._id })
-//       .sort({ createdAt: -1 }) 
+//       .sort({ createdAt: -1 })
 //       .populate({
 //         path: "user",
-//         select: "username profilePicture", 
+//         select: "username profilePicture",
 //       })
 //       .populate({
-//         path: "comments.user", 
-//         select: "username profilePicture", 
+//         path: "comments.user",
+//         select: "username profilePicture",
 //       })
-//       .select("content image likes comments createdAt") 
-//       .lean(); 
+//       .select("content image likes comments createdAt")
+//       .lean();
 
 //     // >>============ Return the User's Posts ===========>>
 //     return res.status(200).json({
@@ -394,7 +403,6 @@ export const getAllPosts = async (req, res) => {
 //     });
 //   }
 // };
-
 
 // >>=========== Get posts of the current user is following =============>>
 export const getFollowingPosts = async (req, res) => {
@@ -417,32 +425,30 @@ export const getFollowingPosts = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate({
         path: "user",
-        select: "username profilePicture", 
+        select: "username profilePicture",
       })
       .populate({
-        path: "comments.user", 
-        select: "username profilePicture", 
+        path: "comments.user",
+        select: "username profilePicture",
       })
       .select("caption image likes comments createdAt")
       .lean(); // for better performance since data is read-only
 
-      // >>==== Handle Empty Posts Case ====>>
+    // >>==== Handle Empty Posts Case ====>>
     if (followingPosts.length === 0) {
       return res.status(200).json({
         success: true,
-        count :followingPosts.length,
+        count: followingPosts.length,
         message: "No posts found",
       });
     }
 
-
     return res.status(200).json({
       success: true,
       message: "Fetched posts from followed users successfully.",
-      count:followingPosts.length,
+      count: followingPosts.length,
       data: followingPosts,
     });
-
   } catch (error) {
     console.error("Error in getFollowingPosts:", error.message);
     return res.status(500).json({

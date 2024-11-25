@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./SmallProfile.scss";
-import profile from "../../../imgs/profilemale.png";
-import cover from "../../../imgs/coverimg.webp";
+
+
 
 import SmallProfileSkeleton from "../../../skeletons/SmallProfileSkeleton";
 import { Link } from "react-router-dom";
@@ -46,7 +46,7 @@ const SmallProfile = () => {
       <div
         className="cover-photo"
         style={{
-          backgroundImage: `url(${cover})`,
+          backgroundImage: `url(${user.coverPicture})`,
         }}
       />
 
@@ -54,7 +54,7 @@ const SmallProfile = () => {
         <div className="profileImg_holder">
           <img
             className="maleProfile"
-            src={profile}
+            src={user.profilePicture}
             alt={`${user.username || "User"}'s profile`}
           />
         </div>

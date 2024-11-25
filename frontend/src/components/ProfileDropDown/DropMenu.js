@@ -1,106 +1,77 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import "../MobileDrawer/MobileDrawer.scss"
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import Settings from "@mui/icons-material/Settings";
-import Logout from "@mui/icons-material/Logout";
-
-import { logout } from "../../utils/apis/auth/logoutApi";
-import { message } from "antd";
+import { Menu, Dropdown, message } from "antd";
+import { SettingOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-
-
+import { logout } from "../../utils/apis/auth/logoutApi";
 
 export default function DropMenu() {
-  const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const [tooltipVisible, setTooltipVisible] = useState(true);
 
   const handleLogout = async () => {
-    const response = await logout();
-    if (response.success) {
-      localStorage.removeItem("quantum-space");
-      message.success(response.message || "Logout successful");
+    const success = await logout();
+    if (success) {
       navigate("/login");
-    } else {
-      message.error(response.message || "Failed to logout");
     }
   };
 
-  return (
-    <React.Fragment>
-      <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-        <Tooltip title="Account settings">
-          <IconButton
-            onClick={handleClick}
-            size="medium"
-            sx={{ ml: 2 }}
-            aria-controls={open ? "account-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-          >
-            <i className="fa-solid fa-bars-staggered menu"></i>
-          </IconButton>
-        </Tooltip>
-      </Box>
-      <Menu
-        anchorEl={anchorEl}
-        id="account-menu"
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            overflow: "visible",
-            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-            mt: 1.5,
-            "& .MuiAvatar-root": {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
-            "&::before": {
-              content: '""',
-              display: "block",
-              position: "absolute",
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: "background.paper",
-              transform: "translateY(-50%) rotate(45deg)",
-              zIndex: 0,
-            },
-          },
+  const menu = (
+    <Menu
+      style={{
+        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.3)",
+        padding: "10px",
+        borderRadius: "8px",
+      }}
+    >
+      <Menu.Item
+        key="settings"
+        onClick={() => message.info("Development is in progress !")}
+        style={{
+          fontSize: "16px",
+          fontWeight: "500",
+          padding: "12px",
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
         }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
-        <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
-      </Menu>
-    </React.Fragment>
+        <SettingOutlined style={{ fontWeight: "500", fontSize: "16px" }} />{" "}
+        Settings
+      </Menu.Item>
+      <Menu.Item
+        key="logout"
+        onClick={handleLogout}
+        style={{
+          fontSize: "16px",
+          fontWeight: "500",
+          padding: "12px",
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+        }}
+      >
+        <LogoutOutlined style={{ fontWeight: "500", fontSize: "16px" }} />{" "}
+        Logout
+      </Menu.Item>
+    </Menu>
+  );
+
+  return (
+    <div className="dropmenu" style={{ position: "relative" }}>
+      <Dropdown
+        overlay={menu}
+        placement="bottomRight"
+        trigger={["click"]}
+        onOpenChange={(visible) => setTooltipVisible(!visible)}
+      >
+        <span
+          style={{
+            cursor: "pointer",
+          }}
+        >
+          <i className="fa-solid fa-bars-staggered menu"></i>
+        </span>
+      </Dropdown>
+    </div>
   );
 }
