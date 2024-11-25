@@ -1,23 +1,19 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
-
+import "../MobileDrawer/MobileDrawer.scss"
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
-// import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-// import Person2RoundedIcon from '@mui/icons-material/Person2Rounded';
 import Tooltip from "@mui/material/Tooltip";
-// import ArticleRoundedIcon from '@mui/icons-material/ArticleRounded';
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
-// import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-// import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
+
 import { logout } from "../../utils/apis/auth/logoutApi";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
 
-// import DarkLightMode from "../ThemeMode/DarkLightMode";
+
 
 export default function DropMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -92,17 +88,6 @@ export default function DropMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {/* <MenuItem onClick={handleClose}>
-          <Person2RoundedIcon fontSize="medium"/> Go to your profile
-        </MenuItem> */}
-        {/* <MenuItem onClick={handleClose}>
-          <ArticleRoundedIcon fontSize="medium"/> Your timeline
-        </MenuItem> */}
-        {/* <MenuItem onClick={handleClose}>
-          <DarkLightMode/>
-        </MenuItem> */}
-        {/* <Divider /> */}
-
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Settings fontSize="small" />
