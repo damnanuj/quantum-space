@@ -21,7 +21,7 @@ export const postsEnpoints = {
   getLikedPosts: `${baseUrl}/posts`,
   getFollowingPosts: `${baseUrl}/posts`,
   getUserPosts: `${baseUrl}/posts`,
-  getAllPosts: `${baseUrl}/posts/get-all?limit=5`,
+  getAllPosts: `${baseUrl}/posts/get-all?limit=10`,
   getOnePostById: `${baseUrl}/posts`,
 };
 

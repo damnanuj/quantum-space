@@ -1,50 +1,58 @@
 import React, { useState } from "react";
-import Box from "@mui/joy/Box";
-
-import Drawer from "@mui/joy/Drawer";
+import { Drawer, Button, Typography } from "antd";
 import profile from "../../imgs/profilemale.png";
-import Typography from "@mui/joy/Typography";
-import ModalClose from "@mui/joy/ModalClose";
 import SmallProfile from "../Common/smallProfile/SmallProfile";
+import UsersToFollow from "../features/UsersToFollow/UsersToFollow";
 import "./MobileDrawer.scss";
 
-import UsersToFollow from "../features/UsersToFollow/UsersToFollow";
-
-export default function MobileDrawer() {
+const MobileDrawer = () => {
   const [open, setOpen] = useState(false);
+
+  const handleDrawerOpen = () => setOpen(true);
+  const handleDrawerClose = () => setOpen(false);
 
   return (
     <React.Fragment>
-      <div className="profile_button" onClick={() => setOpen(true)}>
+      <div className="profile_button" onClick={handleDrawerOpen}>
         <img src={profile} alt="profile" />
       </div>
 
-      <Drawer open={open} onClose={() => setOpen(false)}>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 0.5,
-            ml: "auto",
-            mt: 1,
-            mr: 2,
-          }}
-        >
-          <Typography
-            component="label"
-            htmlFor="close-icon"
-            fontSize="sm"
-            fontWeight="lg"
-            sx={{ cursor: "pointer", color: "white" }}
+      <Drawer
+        title={
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
           >
-            Close
-          </Typography>
-          <ModalClose id="close-icon" sx={{ position: "initial" }} />
-        </Box>
-
-        <SmallProfile />
-        <UsersToFollow />
+            <Typography.Text style={{ fontSize: "16px", color: "white" }}>
+              Close
+            </Typography.Text>
+            <Button
+              type="text"
+              onClick={handleDrawerClose}
+              style={{ color: "white" }}
+              className="mobileMenuCloseBtn"
+            >
+             <i class="fa-solid fa-x"></i>
+            </Button>
+          </div>
+        }
+        placement="left"
+        onClose={handleDrawerClose}
+        open={open}
+        closable={false} 
+        bodyStyle={{ backgroundColor: "#001529", padding: "1rem", gap:"10px" }}
+        headerStyle={{ backgroundColor: "#001529" }} 
+      >
+        <div className="drawer-content">
+          <SmallProfile />
+          <UsersToFollow />
+        </div>
       </Drawer>
     </React.Fragment>
   );
-}
+};
+
+export default MobileDrawer;

@@ -117,8 +117,12 @@ const Posts = () => {
         </div>
       ))}
 
-      {pageNumber < pages && (
+      {pageNumber < pages ? (
         <SeeMore loadMore={loadMorePosts} isLoading={newPostsLoading} />
+      ) : (
+        <div style={{ textAlign: "center", color: "#dc172a" }}>
+          no more posts
+        </div>
       )}
     </>
   );

@@ -1,0 +1,18 @@
+@import "../../colors.scss";
+
+.ant-dropdown {
+   
+    border-radius: 10px !important;
+    .ant-dropdown-menu {
+      padding: 10px !important;
+
+      background-color: $dark-light-color !important;
+      .ant-dropdown-menu-item {
+        padding: 8px 15px !important;
+        color: $dark-text-color !important;
+        &:hover {
+          background-color: $dark-extra-light-color !important;
+        }
+      }
+    }
+  }

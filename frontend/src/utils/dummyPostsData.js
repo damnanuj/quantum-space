@@ -186,7 +186,8 @@ export const PostData = [
       postTime: "6 days ago",
       postText:
         "AI will not replace humans, but humans using AI will replace those who don’t. The future is collaborative. 🤝🤖",
-      postImage: "https://miro.medium.com/v2/resize:fit:1400/0*dClhlnGzYo_3rRXb",
+      postImage:
+        "https://miro.medium.com/v2/resize:fit:1400/0*dClhlnGzYo_3rRXb",
       likesCount: 89,
       commentsCount: 12,
     },

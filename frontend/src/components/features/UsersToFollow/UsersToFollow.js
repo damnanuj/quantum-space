@@ -56,8 +56,12 @@ const UsersToFollow = () => {
               username={user.username}
             />
           ))}
-          {pageNumber < pages && (
+          {pageNumber < pages ? (
             <SeeMore loadMore={loadMoreSuggestions} isLoading={isLoading} />
+          ) : (
+            <div style={{ textAlign: "center", color: "#dc172a" }}>
+              no more suggestions
+            </div>
           )}
         </>
       ) : (

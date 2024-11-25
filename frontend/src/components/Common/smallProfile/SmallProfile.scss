@@ -5,12 +5,13 @@
  
   width: 100%;
 
-  min-height: 400px;
+  min-height: 390px;
   background-color: $dark-light-color;
   position: relative;
   display: flex;
   flex-direction: column;
   border-radius: 20px;
+  margin-bottom: 1rem;
   // Cover Photo Section
   .cover-photo {
     z-index: 99;

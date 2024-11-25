@@ -3,6 +3,7 @@ import { Menu, Dropdown, message } from "antd";
 import { SettingOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../utils/apis/auth/logoutApi";
+import "./DropMenu.scss"
 
 export default function DropMenu() {
   const navigate = useNavigate();
