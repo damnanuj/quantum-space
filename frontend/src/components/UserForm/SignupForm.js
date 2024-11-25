@@ -16,8 +16,7 @@ const onFinishSignup = async (signupFormData) => {
   const { success } = await signupApi(signupFormData);
 
   if (success) {
-   
-    navigate("/dashboard");
+    navigate("/feed");
   } else {
     setIsLoading(false);
   }

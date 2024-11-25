@@ -1,13 +1,10 @@
 import axios from "axios";
-import { notification } from "antd";
+import { message } from "antd";
 import { authEndpoints } from "../../endpoints";
 
 // >>===========  Helper function for notifications ================>>
-export const showNotification = (type, message, description) => {
-  notification[type]({
-    message,
-    description,
-  });
+export const showNotification = (type, description) => {
+  message[type](description); // Ensure single argument
 };
 
 //>>======== Save token to localStorage================>>
@@ -18,25 +15,29 @@ export const saveToken = (token) => {
 export async function loginApi(loginFormData) {
   try {
     const response = await axios.post(authEndpoints.login, loginFormData);
-    const { message, success, data, token } = response.data;
+    const { message: serverMessage, success, token } = response.data;
 
-    //>>save>>
+    // Save token if it exists
     if (token) {
       saveToken(token);
     }
 
-    showNotification("success", "Login Successful", message);
+    // Show success notification
+    showNotification("success", serverMessage);
 
-    return { success: success || true, data };
+    // Return response data
+    return { success: success === true};
   } catch (error) {
     console.error(error);
 
+    // Handle error response
     const errorMessage =
       error.response?.data?.message || "An unexpected error occurred";
     const errorSuccess = error.response?.data?.success || false;
 
-    showNotification("error", "Login Failed", errorMessage);
+    // Show error notification
+    showNotification("error", errorMessage);
 
-    return { success: errorSuccess || false };
+    return { success: errorSuccess, data: null };
   }
 }

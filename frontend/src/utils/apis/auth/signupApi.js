@@ -2,6 +2,9 @@ import axios from "axios";
 import { authEndpoints } from "../../endpoints";
 import { saveToken, showNotification } from "./loginApi";
 
+
+
+
 export async function signupApi(signupFormData) {
   try {
     const response = await axios.post(authEndpoints.signup, signupFormData);
@@ -13,7 +16,7 @@ export async function signupApi(signupFormData) {
       saveToken(token);
     }
 
-    showNotification("success", "Signup Successful", message);
+    showNotification("success", message);
 
     return { success: success || true };
   } catch (error) {
@@ -24,7 +27,7 @@ export async function signupApi(signupFormData) {
       "An unexpected error occurred during signup";
     const errorSuccess = error.response?.data?.success || false;
 
-    showNotification("error", "Signup Failed", errorMessage);
+    showNotification("error", errorMessage);
 
     return { success: errorSuccess || false };
   }

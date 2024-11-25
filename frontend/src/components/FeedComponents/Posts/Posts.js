@@ -4,7 +4,7 @@ import PostSkeleton from "../../../skeletons/PostsSkeleton";
 import PostMenu from "../PostDropMenu/PostDropMenu";
 import { fetchAllPosts } from "../../../utils/apis/feed/fetchAllPosts";
 import { timeAgo } from "../../../utils/convertTimestamp";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { likeUnlikePost } from "../../../utils/apis/feed/likeUnlikePost";
 import { message } from "antd";
 
@@ -17,7 +17,7 @@ const Posts = () => {
   useEffect(() => {
     const token = localStorage.getItem("quantum-space");
     if (token) {
-      const { username, userId } = jwtDecode(token);
+      const {userId } = jwtDecode(token);
       setLoggedInUser(userId);
     }
 
@@ -34,6 +34,7 @@ const Posts = () => {
 
     fetchBlogs();
   }, []);
+
 
   const handleLikeUnlike = async (postId) => {
     // Optimistic UI update
@@ -87,9 +88,7 @@ const Posts = () => {
             <div className="like" onClick={() => handleLikeUnlike(post._id)}>
               <i
                 className={`fa-heart ${
-                  post.likes.includes(loggedInUser)
-                    ? "fa-solid"
-                    : "fa-regular"
+                  post.likes.includes(loggedInUser) ? "fa-solid" : "fa-regular"
                 }`}
               ></i>
               <p>{post.likes.length} Likes</p>
