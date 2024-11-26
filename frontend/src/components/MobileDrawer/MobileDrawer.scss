@@ -1,6 +1,16 @@
 
 @import "../../colors.scss";
 
+
+.profile_button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img{
+    width: 40px;
+  }
+}
+  
 .mobileMenuCloseBtn{
   background-color: $dark-light-color;
 }

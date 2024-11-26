@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../../imgs/logo.png";
+
 import "./Header.scss";
 import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
@@ -28,7 +28,7 @@ const Header = () => {
           <MobileDrawer />
         </div>
         <DropMenu />
-        {/* <MobileDrawer /> */}
+        
       </div>
     </div>
   );
