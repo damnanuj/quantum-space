@@ -1,43 +1,35 @@
 @import "../../colors.scss";
-body{
-  background-color: $dark-main-color ;
+.left_dashboard::-webkit-scrollbar {
+  display: none; 
 }
-
-
+.middle_dashboard::-webkit-scrollbar {
+display: none; 
+}
+.right_dashboard::-webkit-scrollbar {
+  display: none; 
+}
 .main_dashboard {
-  background-color: $dark-main-color ;
+  background-color: $dark-main-color;
 
   position: sticky;
   top: 0;
   margin-top: 0.5rem;
- 
+
   height: 100vh;
   display: flex;
   padding: 0 2rem;
   gap: 2rem;
 
   .left_dashboard {
-
-   
-   height: 100%;
-    
+    height: 100%;
     width: 24%;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
     overflow-y: scroll;
-    
   }
-  .left_dashboard::-webkit-scrollbar {
-    display: none; 
-}
-.middle_dashboard::-webkit-scrollbar {
-  display: none; 
-}
-.right_dashboard::-webkit-scrollbar {
-    display: none; 
-}
+
   .middle_dashboard {
     padding-bottom: 1rem;
     position: relative;
@@ -48,9 +40,9 @@ body{
     gap: 1rem;
     overflow-y: scroll;
   }
+
   .right_dashboard {
     height: 100%;
-    // border: 1px solid blue;
     width: 24%;
     display: flex;
     flex-direction: column;
@@ -58,29 +50,33 @@ body{
     gap: 1rem;
     overflow-y: scroll;
   }
+
+  &.profile_active {
+    .left_dashboard {
+      display: none; 
+    }
+
+    .middle_dashboard {
+      width: 76%; 
+    }
+  }
 }
 
-
-
-
-@media (max-width:600px){
-
-  .left_dashboard,.right_dashboard{
+@media (max-width: 600px) {
+  .left_dashboard,
+  .right_dashboard {
     display: none !important;
   }
-  .middle_dashboard{
+  .middle_dashboard {
     width: 100% !important;
   }
-  .main_dashboard{
-    padding: 0 1rem;
+  .main_dashboard {
+    padding: 0rem;
   }
 }
 
-@media (max-width:450px){
-
-  .main_dashboard{
-    padding: 0 0.8rem;
+@media (max-width: 450px) {
+  .main_dashboard {
+    padding: 0rem;
   }
-
-
 }

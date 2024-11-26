@@ -3,6 +3,8 @@ import { lazy, useEffect, useState } from "react";
 import "./App.scss";
 import LoadingWrapper from "./components/Common/LoadingWrapper/LoadingWrapper";
 import { isTokenValid } from "./utils/isTokenValid";
+import ProfilePage from "./pages/ProfilePage";
+import PostsPage from "./pages/PostsPage";
 
 const Homepage = lazy(() => import("./pages/Homepage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
@@ -46,7 +48,10 @@ function App() {
         {/* Protected Routes */}
         {isUserLogged && (
           <>
-            <Route path="/feed" element={<LoadingWrapper Component={Feed} />} />
+            <Route path="/" element={<LoadingWrapper Component={Feed} />}>
+              <Route path="/feed" element={<PostsPage />} />
+              <Route path="/profile/:username" element={<ProfilePage />} />
+            </Route>
           </>
         )}
         {/* fallback ui 404 */}

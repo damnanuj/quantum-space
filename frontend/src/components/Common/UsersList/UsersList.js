@@ -1,5 +1,6 @@
 import React from "react";
 import "./UsersList.scss";
+import CommonButton from "../Button/CommonButton";
 
 
 const UsersList = ({ name, username, profileImg }) => {
@@ -10,7 +11,8 @@ const UsersList = ({ name, username, profileImg }) => {
         <h4>{name}</h4>
         <span>{username}</span>
       </div>
-      <button className="commonBtnCSS followBtn">Follow</button>
+      <CommonButton color={"white"} text={"Follow"}/>
+      
     </div>
   );
 };

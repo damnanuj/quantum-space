@@ -27,13 +27,8 @@
       opacity: 50%;
     }
   }
-  .followBtn {
-    
-    background-color: $dark-text-color;
-    color: $dark-main-color;
-   
-  }
 }
+
 
 .commonBtnCSS{
   text-align: end;
@@ -44,4 +39,12 @@
   outline: none;
   font-weight: 600;
   transition:all 0.3s ease;
+}
+.whitebg{
+  background-color: $dark-text-color;
+  color: $dark-main-color;
+}
+.bluebg{
+  background-color: $dark-notification-color;
+  color: $dark-text-color;
 }

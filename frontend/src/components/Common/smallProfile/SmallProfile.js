@@ -76,7 +76,7 @@ const SmallProfile = () => {
         </div>
 
         <div className="myProfileBtn">
-          <Link to={`/profile/${user.username || ""}`}>My Profile</Link>
+          <Link to={`/profile/${user.username}`}>My Profile</Link>
         </div>
       </div>
     </div>
