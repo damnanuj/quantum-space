@@ -15,12 +15,12 @@ const Posts = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [pages, setPages] = useState(1);
-  const [newPostsLoading, setNewPostsLoading] = useState(false);
+  const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
 
   // Fetch posts based on page number
   const fetchPosts = async (page) => {
     try {
-      setNewPostsLoading(true);
+      setIsFetchingNextPage(true);
       const { response, userId } = await fetchAllPosts(page);
 
       if (response.success) {
@@ -34,23 +34,23 @@ const Posts = () => {
       setError(err);
     } finally {
       setLoading(false);
-      setNewPostsLoading(false);
+      setIsFetchingNextPage(false);
     }
   };
 
   // Initial fetch
   useEffect(() => {
-    fetchPosts(1);
-  }, []);
+    fetchPosts(pageNumber);
+  }, [pageNumber]);
 
   // Load more posts
   const loadMorePosts = () => {
-    if (pageNumber < pages && !newPostsLoading) {
-      const nextPage = pageNumber + 1;
-      setPageNumber(nextPage); // Increment page number
-      fetchPosts(nextPage); // Fetch next page
+    if (pageNumber < pages && !isFetchingNextPage) {
+      setPageNumber((prevPage) => prevPage + 1);
     }
   };
+
+  const isLastPage = pageNumber >= pages; // Check if the current page is the last one
 
   // Handle like/unlike
   const handleLikeUnlike = async (postId) => {
@@ -117,11 +117,11 @@ const Posts = () => {
         </div>
       ))}
 
-      {pageNumber < pages ? (
-        <SeeMore loadMore={loadMorePosts} isLoading={newPostsLoading} />
+      {!isLastPage || isFetchingNextPage ? (
+        <SeeMore loadMore={loadMorePosts} isLoading={isFetchingNextPage} />
       ) : (
         <div style={{ textAlign: "center", color: "#dc172a" }}>
-          no more posts
+          No more posts
         </div>
       )}
     </>

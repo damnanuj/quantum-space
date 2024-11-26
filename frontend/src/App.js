@@ -15,11 +15,12 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isTokenValid()) {
-      setIsUserLogged(false)
-    } else {
-      navigate("/feed")
-      setIsUserLogged(true);
+    const loggedIn = isTokenValid();
+    setIsUserLogged(loggedIn);
+
+    const currentPath = window.location.pathname;
+    if (loggedIn && (currentPath === "/login" || currentPath === "/signup")) {
+      navigate("/feed");
     }
   }, [navigate]);
 
@@ -27,20 +28,28 @@ function App() {
     <div className="App">
       <Routes>
         {/* Public Routes */}
+        <Route path="/" element={<LoadingWrapper Component={Homepage} />} />
+
         {!isUserLogged && (
           <>
-            <Route path="/" element={<LoadingWrapper Component={Homepage} />} />
-            <Route path="/login" element={<LoadingWrapper Component={LoginPage} />}/>
-            <Route path="/signup" element={<LoadingWrapper Component={SignupPage} />}/>
+            <Route
+              path="/login"
+              element={<LoadingWrapper Component={LoginPage} />}
+            />
+            <Route
+              path="/signup"
+              element={<LoadingWrapper Component={SignupPage} />}
+            />
           </>
         )}
 
         {/* Protected Routes */}
         {isUserLogged && (
-          <Route path="/feed" element={<LoadingWrapper Component={Feed} />} />
-         )}
-
-        {/* Fallback Route */}
+          <>
+            <Route path="/feed" element={<LoadingWrapper Component={Feed} />} />
+          </>
+        )}
+        {/* fallback ui 404 */}
         <Route path="*" element={<LoadingWrapper Component={WrongRoute} />} />
       </Routes>
     </div>

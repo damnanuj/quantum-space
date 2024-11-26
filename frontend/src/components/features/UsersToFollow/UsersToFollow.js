@@ -8,37 +8,39 @@ import SeeMore from "../../Common/SeeMore/SeeMore";
 
 const UsersToFollow = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [pages, setPages] = useState(1);
 
   // Fetch suggestions
   const fetchSuggestions = async (page) => {
-    setIsLoading(true);
+    setIsFetchingNextPage(true);
     try {
       const response = await getUserSuggestions(page);
       if (response.success && response.data.length > 0) {
-        setSuggestions((prev) => [...prev, ...response.data]);
+        setSuggestions((prev) => [...prev, ...response.data]); // Append new suggestions
         setPages(response.totalPages); // Update total pages
       }
     } catch (error) {
       console.error("Failed to fetch suggestions:", error);
     } finally {
-      setIsLoading(false);
+      setIsFetchingNextPage(false);
       setIsInitialLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchSuggestions(pageNumber); // Fetch suggestions when component mounts
+    fetchSuggestions(pageNumber); 
   }, [pageNumber]);
 
   const loadMoreSuggestions = () => {
-    if (pageNumber < pages && !isLoading) {
-      setPageNumber((prevPage) => prevPage + 1); // Increment page number
+    if (pageNumber < pages && !isFetchingNextPage) {
+      setPageNumber((prevPage) => prevPage + 1);
     }
   };
+
+  const isLastPage = pageNumber >= pages; // Check if current page is the last page
 
   return (
     <div className="UsersToFollow_container">
@@ -56,11 +58,11 @@ const UsersToFollow = () => {
               username={user.username}
             />
           ))}
-          {pageNumber < pages ? (
-            <SeeMore loadMore={loadMoreSuggestions} isLoading={isLoading} />
+          {!isLastPage || isFetchingNextPage ? (
+            <SeeMore loadMore={loadMoreSuggestions} isLoading={isFetchingNextPage} />
           ) : (
             <div style={{ textAlign: "center", color: "#dc172a" }}>
-              no more suggestions
+              No more suggestions
             </div>
           )}
         </>
