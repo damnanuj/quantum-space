@@ -1,27 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./userProfile.scss";
 import CommonButton from "../Button/CommonButton";
 
-const UserProfile = ({ isLoggedUser = true }) => {
-  const user = {
-    name: "Anuj Kumar",
-    username: "anuj",
-    location: "Patna, India",
-    about: "Web Developer | Tech Enthusiast",
-    coverPhoto:
-      "https://i.pinimg.com/736x/b6/0e/bb/b60ebb76818e10a1ffeb1d76ef807568.jpg",
-    profileImage: "https://randomuser.me/api/portraits/men/6.jpg",
-    followers: 120,
-    following: 80,
-    isFollowed: false,
-  };
+import { fetchUserProfile } from "../../../utils/apis/feed/fetchUserProfile";
+import { useParams } from "react-router-dom";
+import UserProfilePageSkeleton from "../../../skeletons/UserProfilePageSkeleton";
+import { jwtDecode } from "jwt-decode";
+
+const UserProfile = () => {
+  const { username } = useParams();
+  const [user, setUser] = useState({});
+  const [isLoggedUser, setIsLoggedUser] = useState(false); // Dynamically determine
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const userProfile = await fetchUserProfile(username);
+        if (userProfile.success === false) {
+          throw new Error(userProfile.message);
+        }
+        setUser(userProfile.data);
+
+        // Determine if the fetched user is the logged-in user
+        const token = localStorage.getItem("quantum-space");
+        if (token) {
+          const decoded = jwtDecode(token);
+          setIsLoggedUser(username === decoded.username || !username);
+        }
+      } catch (err) {
+        setError(err.message || "An error occurred.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [username]);
+
+  if (loading) return <UserProfilePageSkeleton />;
+  if (error) return <div>{error}</div>;
+
   return (
     <div className="userProfileContainer">
       {/* Cover Photo */}
       <div className="coverPhoto">
         <img
           alt="coverPic"
-          src={user.coverPhoto || "https://via.placeholder.com/800x150"}
+          src={user.coverPicture || "https://via.placeholder.com/800x150"}
         />
       </div>
 
@@ -30,7 +59,7 @@ const UserProfile = ({ isLoggedUser = true }) => {
         <div className="profileImage">
           <img
             alt="profilePic"
-            src={user.profileImage || "https://via.placeholder.com/100"}
+            src={user.profilePicture || "https://via.placeholder.com/100"}
           />
         </div>
       </div>
@@ -39,19 +68,20 @@ const UserProfile = ({ isLoggedUser = true }) => {
           <h2>{user.name}</h2>
           <p>@{user.username}</p>
           <p>{user.about}</p>
-          <p>{user.location}</p>
+          <p>{user.location?.country || "Location not provided"}</p>
 
           <div className="stats">
             <div>
-              <strong>{user.followers}</strong> Followers
+              <strong>{user.followers ? user.followers.length : "0"}</strong>{" "}
+              Followers
             </div>
             <div>
-              <strong>{user.following}</strong> Following
+              <strong>{user.following ? user.following.length : "0"}</strong>{" "}
+              Following
             </div>
           </div>
         </div>
 
-            <p style={{color:"Red"}}>Development is in progress</p>
         <div className="editFollowButton">
           {isLoggedUser ? (
             <CommonButton text={"Edit Profile"} color={"blue"} />

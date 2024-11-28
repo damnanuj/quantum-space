@@ -6,6 +6,7 @@ import { isTokenValid } from "./utils/isTokenValid";
 import ProfilePage from "./pages/ProfilePage";
 import PostsPage from "./pages/PostsPage";
 
+
 const Homepage = lazy(() => import("./pages/Homepage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const SignupPage = lazy(() => import("./pages/SignupPage"));
@@ -28,35 +29,37 @@ function App() {
 
   return (
     <div className="App">
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<LoadingWrapper Component={Homepage} />} />
+    
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<LoadingWrapper Component={Homepage} />} />
 
-        {!isUserLogged && (
-          <>
-            <Route
-              path="/login"
-              element={<LoadingWrapper Component={LoginPage} />}
-            />
-            <Route
-              path="/signup"
-              element={<LoadingWrapper Component={SignupPage} />}
-            />
-          </>
-        )}
+          {!isUserLogged && (
+            <>
+              <Route
+                path="/login"
+                element={<LoadingWrapper Component={LoginPage} />}
+              />
+              <Route
+                path="/signup"
+                element={<LoadingWrapper Component={SignupPage} />}
+              />
+            </>
+          )}
 
-        {/* Protected Routes */}
-        {isUserLogged && (
-          <>
-            <Route path="/" element={<LoadingWrapper Component={Feed} />}>
-              <Route path="/feed" element={<PostsPage />} />
-              <Route path="/profile/:username" element={<ProfilePage />} />
-            </Route>
-          </>
-        )}
-        {/* fallback ui 404 */}
-        <Route path="*" element={<LoadingWrapper Component={WrongRoute} />} />
-      </Routes>
+          {/* Protected Routes */}
+          {isUserLogged && (
+            <>
+              <Route path="/" element={<LoadingWrapper Component={Feed} />}>
+                <Route path="/feed" element={<PostsPage />} />
+                <Route path="/profile/:username" element={<ProfilePage />} />
+              </Route>
+            </>
+          )}
+          {/* fallback ui 404 */}
+          <Route path="*" element={<LoadingWrapper Component={WrongRoute} />} />
+        </Routes>
+     
     </div>
   );
 }

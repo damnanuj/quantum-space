@@ -9,14 +9,17 @@
   align-items: center;
   justify-content: space-between;
   background-color: $dark-light-color;
+  
   img {
     width: 50px;
     border-radius: 50%;
+    cursor: pointer;
   }
   .nameUsername {
     display: flex;
     flex-direction: column;
     // border: 1px solid red;
+    cursor: pointer;
     width: 40%;
     h3,
     span {

@@ -1,8 +1,8 @@
 import axios from "axios";
 import { userEndpoints } from "../../endpoints";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
-export const fetchUserProfile = async () => {
+export const fetchUserProfile = async (username = null) => {
   try {
     const token = localStorage.getItem("quantum-space");
     if (!token) {
@@ -10,7 +10,11 @@ export const fetchUserProfile = async () => {
     }
 
     const decoded = jwtDecode(token);
-    const response = await axios.get(userEndpoints.getUser(decoded.username), {
+
+    
+    const targetUsername = username || decoded.username;
+
+    const response = await axios.get(userEndpoints.getUser(targetUsername), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
