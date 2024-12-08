@@ -14,7 +14,8 @@ const SmallProfile = ({ onCloseDrawer }) => {
 
   const handleNavigation = () => {
     // Close the drawer and navigate to the profile page
-    onCloseDrawer();
+    //this is while on  mobile view
+    if (onCloseDrawer) onCloseDrawer();
   };
 
   useEffect(() => {

@@ -20,12 +20,22 @@ function App() {
   useEffect(() => {
     const loggedIn = isTokenValid();
     setIsUserLogged(loggedIn);
-
+  
     const currentPath = window.location.pathname;
-    if (loggedIn && (currentPath === "/login" || currentPath === "/signup")) {
-      navigate("/feed");
+  
+    if (!loggedIn) {
+     
+      if (currentPath !== "/" && currentPath !== "/login" && currentPath !== "/signup") {
+        navigate("/login");
+      }
+    } else {
+      
+      if (currentPath === "/login" || currentPath === "/signup") {
+        navigate("/feed");
+      }
     }
-  }, [navigate]);
+  }, [navigate, isUserLogged, window.location.pathname]);
+  
 
   return (
     <div className="App">
