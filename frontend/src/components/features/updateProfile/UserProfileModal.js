@@ -1,26 +1,45 @@
-import React, { useState } from "react";
-import { Modal, Form, Input, Button, message, Row, Col } from "antd";
+import React, { useContext, useEffect, useState } from "react";
+import { Modal, Form, Input, Button, message } from "antd";
+import "./UserProfileModal.scss";
 import { updateProfileDetails } from "../../../utils/apis/users/updateProfileDetails";
+import { UserContext } from "../../../context/userContext";
 
 const UserProfileModal = ({ visible, onCancel }) => {
- 
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const { user, setUser } = useContext(UserContext);
 
- 
+  useEffect(() => {
+    if (visible) {
+      //>>==== Prefill the form with user data===>>
+      form.setFieldsValue({
+        name: user.name || "",
+        username: user.username || "",
+        city: user.location?.city || "",
+        state: user.location?.state || "",
+        country: user.location?.country || "",
+        about: user.about || "",
+        website: user.website || "",
+      });
+    }
+  }, [visible, user, form]);
 
   const handleSaveChanges = async () => {
     setLoading(true);
     try {
       const updatedValues = await form.validateFields();
-
       //>>=== sending updated details to the backend API===>>
       const response = await updateProfileDetails(updatedValues);
 
       if (response.success) {
         message.success(response.message);
-       
-        onCancel(); 
+
+        setUser((prevUser) => ({
+          ...prevUser,
+          ...updatedValues,
+        }));
+
+        onCancel();
       } else {
         message.error("Failed to update profile. Please try again.");
       }
@@ -34,69 +53,66 @@ const UserProfileModal = ({ visible, onCancel }) => {
 
   return (
     <Modal
-      visible={visible}
-      title="Edit Profile"
+      open={visible}
       onCancel={onCancel}
-      footer={[
-        <Button key="cancel" onClick={onCancel}>
-          Cancel
-        </Button>,
-        <Button
-          key="save"
-          type="primary"
-          loading={loading}
-          onClick={handleSaveChanges}
-        >
-          Save Changes
-        </Button>,
-      ]}
+      footer={null}
+      className="edit-profile-modal"
     >
-      <Form form={form} layout="vertical" name="userProfileForm">
-        <Form.Item
-          label="Full Name"
-          name="name"
-          rules={[{ required: true, message: "Please enter your full name" }]}
-        >
-          <Input placeholder="Full Name" />
+      <div className="edit-modal-header">
+        <h2>Edit Profile</h2>
+      </div>
+      <Form form={form} layout="vertical" className="edit-profile-form">
+        <div className="nameUsername">
+          <Form.Item
+            label="Full Name"
+            name="name"
+            rules={[{ required: true, message: "Please enter your full name" }]}
+          >
+            <Input placeholder="Full Name" />
+          </Form.Item>
+
+          <Form.Item
+            label="Username"
+            name="username"
+            rules={[{ required: true, message: "Please enter a username" }]}
+          >
+            <Input placeholder="Username" />
+          </Form.Item>
+        </div>
+
+        <div className="cityState">
+          <Form.Item label="City" name="city">
+            <Input placeholder="City" />
+          </Form.Item>
+
+          <Form.Item label="State" name="state">
+            <Input placeholder="State" />
+          </Form.Item>
+        </div>
+
+        <Form.Item label="Country" name="country">
+          <Input placeholder="Country" />
         </Form.Item>
 
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              label="Username"
-              name="username"
-              rules={[{ required: true, message: "Please enter a username" }]}
-            >
-              <Input placeholder="Username" />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row gutter={16}>
-          <Col span={8}>
-            <Form.Item label="City" name="city">
-              <Input placeholder="City" />
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item label="State" name="state">
-              <Input placeholder="State" />
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item label="Country" name="country">
-              <Input placeholder="Country" />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Form.Item label="about" name="about">
+        <Form.Item label="About" name="about">
           <Input.TextArea placeholder="Tell us about yourself" rows={3} />
         </Form.Item>
-
-        <Form.Item label="website" name="website">
+        <Form.Item label="Website" name="website">
           <Input placeholder="Your social or personal website link" />
         </Form.Item>
+        <div className="edit-modal-footer">
+          <Button onClick={onCancel} className="cancel-btn">
+            Cancel
+          </Button>
+          <Button
+            type="primary"
+            loading={loading}
+            onClick={handleSaveChanges}
+            className="save-btn"
+          >
+            Save Changes
+          </Button>
+        </div>
       </Form>
     </Modal>
   );

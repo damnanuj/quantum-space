@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./userProfile.scss";
 import CommonButton from "../Button/CommonButton";
 
@@ -6,11 +6,15 @@ import { fetchUserProfile } from "../../../utils/apis/feed/fetchUserProfile";
 import { useParams } from "react-router-dom";
 import UserProfilePageSkeleton from "../../../skeletons/UserProfilePageSkeleton";
 import { jwtDecode } from "jwt-decode";
+import UpdateDetails from "../../features/updateProfile/UpdateDetails";
+import { UserContext } from "../../../context/userContext";
 
 const UserProfile = () => {
   const { username } = useParams();
-  const [user, setUser] = useState({});
-  const [isLoggedUser, setIsLoggedUser] = useState(false); // Dynamically determine
+  const { user, setUser } = useContext(UserContext);
+
+  const [fetchedUser, setFetchedUser] = useState(null);
+  const [isLoggedUser, setIsLoggedUser] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -23,13 +27,20 @@ const UserProfile = () => {
         if (userProfile.success === false) {
           throw new Error(userProfile.message);
         }
-        setUser(userProfile.data);
 
-        // Determine if the fetched user is the logged-in user
+        // Check if the fetched user is the logged-in user
         const token = localStorage.getItem("quantum-space");
         if (token) {
           const decoded = jwtDecode(token);
-          setIsLoggedUser(username === decoded.username || !username);
+          const isAuthUser = username === decoded.username || !username;
+
+          setIsLoggedUser(isAuthUser);
+
+          if (isAuthUser) {
+            setUser(userProfile.data);
+          } else {
+            setFetchedUser(userProfile.data);
+          }
         }
       } catch (err) {
         setError(err.message || "An error occurred.");
@@ -39,10 +50,13 @@ const UserProfile = () => {
     };
 
     fetchUserData();
-  }, [username]);
+  }, [username, setUser]);
 
   if (loading) return <UserProfilePageSkeleton />;
   if (error) return <div>{error}</div>;
+
+  // Determine which user details to display
+  const displayedUser = isLoggedUser ? user : fetchedUser;
 
   return (
     <div className="userProfileContainer">
@@ -50,7 +64,9 @@ const UserProfile = () => {
       <div className="coverPhoto">
         <img
           alt="coverPic"
-          src={user.coverPicture || "https://via.placeholder.com/800x150"}
+          src={
+            displayedUser?.coverPicture || "https://via.placeholder.com/800x150"
+          }
         />
       </div>
 
@@ -59,24 +75,29 @@ const UserProfile = () => {
         <div className="profileImage">
           <img
             alt="profilePic"
-            src={user.profilePicture || "https://via.placeholder.com/100"}
+            src={
+              displayedUser?.profilePicture || "https://via.placeholder.com/100"
+            }
           />
         </div>
       </div>
       <div className="detailsContainer">
         <div className="userDetails">
-          <h2>{user.name}</h2>
-          <p>@{user.username}</p>
-          <p>{user.about}</p>
-          <p>{user.location?.country || "Location not provided"}</p>
+          <h2>{displayedUser?.name}</h2>
+          <p>@{displayedUser?.username}</p>
+          <p>{displayedUser?.about}</p>
+          <p>
+            {displayedUser?.location?.city},{" "}
+            {displayedUser?.location?.country || "Location not provided"}
+          </p>
 
           <div className="stats">
             <div>
-              <strong>{user.followers ? user.followers.length : "0"}</strong>{" "}
+              <strong>{displayedUser?.followers?.length || "0"}</strong>{" "}
               Followers
             </div>
             <div>
-              <strong>{user.following ? user.following.length : "0"}</strong>{" "}
+              <strong>{displayedUser?.following?.length || "0"}</strong>{" "}
               Following
             </div>
           </div>
@@ -84,11 +105,11 @@ const UserProfile = () => {
 
         <div className="editFollowButton">
           {isLoggedUser ? (
-            <CommonButton text={"Edit Profile"} color={"blue"} />
+            <UpdateDetails />
           ) : (
             <CommonButton
-              color={user.isFollowed ? "blue" : "white"}
-              text={user.isFollowed ? "Following" : "Follow"}
+              color={displayedUser?.isFollowed ? "blue" : "white"}
+              text={displayedUser?.isFollowed ? "Following" : "Follow"}
             />
           )}
         </div>

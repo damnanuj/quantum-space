@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import UserProfileModal from "./UserProfileModal";
 
-
 const UpdateDetails = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -10,7 +9,9 @@ const UpdateDetails = () => {
 
   return (
     <div>
-      <button onClick={openModal}>Edit Profile</button>
+      <button className="commonBtnCSS bluebg" onClick={openModal}>
+        Edit Profile
+      </button>
       <UserProfileModal visible={isModalVisible} onCancel={closeModal} />
     </div>
   );

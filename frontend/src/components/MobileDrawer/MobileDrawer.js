@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Drawer, Button, Typography } from "antd";
-import profile from "../../imgs/profilemale.png";
 import SmallProfile from "../Common/smallProfile/SmallProfile";
 import UsersToFollow from "../features/UsersToFollow/UsersToFollow";
 import "./MobileDrawer.scss";
+import { UserContext } from "../../context/userContext";
 
 const MobileDrawer = () => {
+  const { user } = useContext(UserContext);
   const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => setOpen(true);
@@ -14,7 +15,7 @@ const MobileDrawer = () => {
   return (
     <React.Fragment>
       <div className="profile_button" onClick={handleDrawerOpen}>
-        <img src={profile} alt="profile" />
+        <img src={user.profilePicture} alt="profile" />
       </div>
 
       <Drawer
@@ -35,20 +36,20 @@ const MobileDrawer = () => {
               style={{ color: "white" }}
               className="mobileMenuCloseBtn"
             >
-             <i class="fa-solid fa-x"></i>
+              <i class="fa-solid fa-x"></i>
             </Button>
           </div>
         }
         placement="left"
         onClose={handleDrawerClose}
         open={open}
-        closable={false} 
-        bodyStyle={{ backgroundColor: "#001529", padding: "1rem", gap:"10px" }}
-        headerStyle={{ backgroundColor: "#001529" }} 
+        closable={false}
+        bodyStyle={{ backgroundColor: "#001529", padding: "1rem", gap: "10px" }}
+        headerStyle={{ backgroundColor: "#001529" }}
       >
         <div className="drawer-content">
-          <SmallProfile />
-          <UsersToFollow />
+          <SmallProfile onCloseDrawer={handleDrawerClose} />
+          <UsersToFollow onCloseDrawer={handleDrawerClose} />
         </div>
       </Drawer>
     </React.Fragment>

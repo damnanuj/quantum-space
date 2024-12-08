@@ -2,15 +2,15 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import "./Header.scss";
 
-
 import DropMenu from "../../ProfileDropDown/DropMenu";
 import MobileDrawer from "../../MobileDrawer/MobileDrawer";
 
 const Header = () => {
   const navItems = [
-    { path: "/feed", 
-      icon: <i className="fa-solid fa-house"></i>, 
-      label: "Home" 
+    {
+      path: "/feed",
+      icon: <i className="fa-solid fa-house"></i>,
+      label: "Home",
     },
     {
       path: "/notifications",

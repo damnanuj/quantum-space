@@ -1,0 +1,63 @@
+@import "../../../colors.scss";
+.edit-profile-modal {
+  .ant-modal-content {
+    background-color: $dark-light-color;
+  }
+  .edit-modal-header {
+    color: $dark-text-color;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .ant-modal-close {
+    color: $dark-text-color;
+    &:hover {
+      background-color: $dark-text-color;
+      color: $dark-light-color;
+    }
+  }
+  .edit-profile-form {
+    .ant-form-item {
+      margin-bottom: 1rem;
+      flex-grow: 1;
+      label {
+        font-weight: 500;
+
+        color: $dark-text-color;
+      }
+      input,
+      textarea {
+        color: $dark-text-color;
+        border: 1px dotted rgba($dark-text-color, 0.3);
+        background-color: $dark-extra-light-color;
+
+        &::placeholder {
+          color: $dark-text-color;
+          opacity: 0.5 !important;
+        }
+        &:focus {
+          border-color: $dark-notification-color;
+        }
+      }
+    }
+    .nameUsername,
+    .cityState {
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+    }
+  }
+}
+
+.edit-modal-footer {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  .cancel-btn{
+    &:hover{
+     color: $dark-notification-color !important;
+    }
+  }
+  .save-btn {
+    background-color: $dark-notification-color;
+  }
+}

@@ -1,14 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./SmallProfile.scss";
 
 import SmallProfileSkeleton from "../../../skeletons/SmallProfileSkeleton";
 import { Link } from "react-router-dom";
 import { fetchUserProfile } from "../../../utils/apis/feed/fetchUserProfile";
+import { UserContext } from "../../../context/userContext";
 
-const SmallProfile = () => {
-  const [user, setUser] = useState({});
+const SmallProfile = ({ onCloseDrawer }) => {
+  const { user, setUser } = useContext(UserContext);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const handleNavigation = () => {
+    // Close the drawer and navigate to the profile page
+    onCloseDrawer();
+  };
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -76,7 +83,9 @@ const SmallProfile = () => {
         </div>
 
         <div className="myProfileBtn">
-          <Link to={`/profile/${user.username}`}>My Profile</Link>
+          <Link onClick={handleNavigation} to={`/profile/${user.username}`}>
+            My Profile
+          </Link>
         </div>
       </div>
     </div>

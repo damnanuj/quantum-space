@@ -6,7 +6,7 @@ import { getUserSuggestions } from "../../../utils/apis/users/getUserSuggestions
 import UsersList from "../../Common/UsersList/UsersList";
 import SeeMore from "../../Common/SeeMore/SeeMore";
 
-const UsersToFollow = () => {
+const UsersToFollow = ({ onCloseDrawer }) => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
@@ -31,7 +31,7 @@ const UsersToFollow = () => {
   };
 
   useEffect(() => {
-    fetchSuggestions(pageNumber); 
+    fetchSuggestions(pageNumber);
   }, [pageNumber]);
 
   const loadMoreSuggestions = () => {
@@ -52,6 +52,7 @@ const UsersToFollow = () => {
         <>
           {suggestions.map((user) => (
             <UsersList
+              onCloseDrawer={onCloseDrawer}
               key={user.username}
               profileImg={user.profilePicture}
               name={user.name}
@@ -59,7 +60,10 @@ const UsersToFollow = () => {
             />
           ))}
           {!isLastPage || isFetchingNextPage ? (
-            <SeeMore loadMore={loadMoreSuggestions} isLoading={isFetchingNextPage} />
+            <SeeMore
+              loadMore={loadMoreSuggestions}
+              isLoading={isFetchingNextPage}
+            />
           ) : (
             <div style={{ textAlign: "center", color: "#dc172a" }}>
               No more suggestions

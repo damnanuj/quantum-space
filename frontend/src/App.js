@@ -5,7 +5,7 @@ import LoadingWrapper from "./components/Common/LoadingWrapper/LoadingWrapper";
 import { isTokenValid } from "./utils/isTokenValid";
 import ProfilePage from "./pages/ProfilePage";
 import PostsPage from "./pages/PostsPage";
-
+import { UserProvider } from "./context/userContext";
 
 const Homepage = lazy(() => import("./pages/Homepage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
@@ -29,7 +29,7 @@ function App() {
 
   return (
     <div className="App">
-    
+      <UserProvider>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<LoadingWrapper Component={Homepage} />} />
@@ -59,7 +59,7 @@ function App() {
           {/* fallback ui 404 */}
           <Route path="*" element={<LoadingWrapper Component={WrongRoute} />} />
         </Routes>
-     
+      </UserProvider>
     </div>
   );
 }

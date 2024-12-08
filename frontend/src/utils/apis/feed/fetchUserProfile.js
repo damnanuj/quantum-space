@@ -1,6 +1,6 @@
 import axios from "axios";
 import { userEndpoints } from "../../endpoints";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 export const fetchUserProfile = async (username = null) => {
   try {
@@ -11,7 +11,6 @@ export const fetchUserProfile = async (username = null) => {
 
     const decoded = jwtDecode(token);
 
-    
     const targetUsername = username || decoded.username;
 
     const response = await axios.get(userEndpoints.getUser(targetUsername), {
