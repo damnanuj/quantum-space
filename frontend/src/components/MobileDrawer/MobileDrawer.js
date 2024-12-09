@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Drawer, Button, Typography } from "antd";
+import profile from "../../imgs/blank-profile.png"; // Fallback image
 import SmallProfile from "../Common/smallProfile/SmallProfile";
 import UsersToFollow from "../features/UsersToFollow/UsersToFollow";
 import "./MobileDrawer.scss";
@@ -12,10 +13,16 @@ const MobileDrawer = () => {
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
 
+  
+
   return (
     <React.Fragment>
       <div className="profile_button" onClick={handleDrawerOpen}>
-        <img src={user.profilePicture} alt="profile" />
+        <img
+          src={user.profilePicture || profile} 
+          alt="profile"
+         
+        />
       </div>
 
       <Drawer
@@ -36,7 +43,7 @@ const MobileDrawer = () => {
               style={{ color: "white" }}
               className="mobileMenuCloseBtn"
             >
-              <i class="fa-solid fa-x"></i>
+              <i className="fa-solid fa-x"></i>
             </Button>
           </div>
         }

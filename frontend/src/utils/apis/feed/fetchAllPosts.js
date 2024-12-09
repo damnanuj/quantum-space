@@ -20,7 +20,7 @@ export const fetchAllPosts = async (pageNumber) => {
       }
     );
 
-    return {response:response.data, userId};
+    return { response: response.data, userId };
   } catch (error) {
     console.error("Error fetching posts:", error.message);
   }

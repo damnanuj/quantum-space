@@ -57,6 +57,7 @@ const UserProfile = () => {
 
   // Determine which user details to display
   const displayedUser = isLoggedUser ? user : fetchedUser;
+  console.log(displayedUser);
 
   return (
     <div className="userProfileContainer">
@@ -90,7 +91,6 @@ const UserProfile = () => {
             {displayedUser?.location?.city},{" "}
             {displayedUser?.location?.country || "Location not provided"}
           </p>
-
           <div className="stats">
             <div>
               <strong>{displayedUser?.followers?.length || "0"}</strong>{" "}

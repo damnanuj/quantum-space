@@ -1,5 +1,5 @@
-const baseUrl = "https://quantum-space.onrender.com/api";
-// const baseUrl = "http://localhost:8000/api";
+// const baseUrl = "https://quantum-space.onrender.com/api";
+const baseUrl = "http://localhost:8000/api";
 
 export const authEndpoints = {
   signup: `${baseUrl}/auth/signup`,
@@ -7,6 +7,7 @@ export const authEndpoints = {
   login: `${baseUrl}/auth/login`,
   validate_token: `${baseUrl}/auth/validate-token`,
 };
+
 
 export const userEndpoints = {
   getUser: (username) => `${baseUrl}/users/profile/${username}`,
@@ -16,7 +17,7 @@ export const userEndpoints = {
 };
 
 export const postsEnpoints = {
-  createPost: `${baseUrl}/posts`,
+  createPost: `${baseUrl}/posts/create`,
   deletePost: `${baseUrl}/posts`,
   likeUnlikePost: (postId) => `${baseUrl}/posts/like-unlike/${postId}`,
   getLikedPosts: `${baseUrl}/posts`,

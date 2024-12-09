@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./Header.scss";
 
 import DropMenu from "../../ProfileDropDown/DropMenu";
@@ -19,10 +19,12 @@ const Header = () => {
     },
   ];
 
+
+
   return (
     <div className="header_container">
       <div className="header_left">
-        <h1 className="logo">QuantumSpace</h1>
+        <Link to="/"><h1 className="logo">QuantumSpace</h1></Link>
       </div>
 
       <div className="header_middle">

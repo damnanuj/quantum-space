@@ -28,6 +28,7 @@ const UserProfileModal = ({ visible, onCancel }) => {
     setLoading(true);
     try {
       const updatedValues = await form.validateFields();
+   
       //>>=== sending updated details to the backend API===>>
       const response = await updateProfileDetails(updatedValues);
 
