@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { v2 as cloudinary } from "cloudinary";
+import bodyParser from "body-parser";
 
 // >>============File Imports=========>>
 import authRoutes from "./routes/authRoute.js";
@@ -31,6 +32,10 @@ app.use(
 app.options("*", cors());
 
 const PORT = process.env.PORT || 8000;
+
+// Increase payload limit
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(express.json()); //json body parser
 app.use(cookieParser()); //cookie parser
