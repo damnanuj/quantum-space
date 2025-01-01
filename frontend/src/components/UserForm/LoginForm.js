@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import React, { useState } from "react";
 import "./SignupForm.scss";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,14 +11,20 @@ const LoginForm = () => {
 
   const onFinishLogin = async (loginFormData) => {
     setIsLoading(true);
+    // >>======if the backend is facing downtime================>>
+    const timeoutId = setTimeout(() => {
+      message.info("Please wait, it's taking longer than usual.");
+    }, 10000);
     try {
       const { success } = await loginApi(loginFormData);
       if (success) {
+        clearTimeout(timeoutId);
         navigate("/feed");
       }
     } catch (error) {
       console.error("Login error:", error);
     } finally {
+      clearTimeout(timeoutId);
       setIsLoading(false);
     }
   };

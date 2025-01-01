@@ -42,7 +42,8 @@ const UserProfileModal = ({ visible, onCancel }) => {
 
         onCancel();
       } else {
-        message.error("Failed to update profile. Please try again.");
+        console.log("=====",response);
+        message.error(response.response.data.message || "Failed to update profile. Please try again.");
       }
     } catch (info) {
       console.log("Validation Failed:", info);
