@@ -50,9 +50,9 @@ const Posts = () => {
     }
   };
 
-  const isLastPage = pageNumber >= pages; // Check if the current page is the last one
+  const isLastPage = pageNumber >= pages; 
 
-  // Handle like/unlike
+  //>>============ Handle like/unlike ===============>>
   const handleLikeUnlike = async (postId) => {
     const updatedPosts = posts.map((post) => {
       if (post._id === postId) {
@@ -77,6 +77,11 @@ const Posts = () => {
     }
   };
 
+   //>>======= Handle post deletion ==========>>
+   const handlePostDeleted = (postId) => {
+    setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+  };
+
   // Loading state
   if (loading) return <PostSkeleton loading={loading} />;
   if (error) return <p>Error loading blogs: {error.message}</p>;
@@ -94,7 +99,12 @@ const Posts = () => {
               </div>
               <span>@{post.user.username}</span>
             </div>
-            {loggedInUser === post.user.username && <PostMenu />}
+            {loggedInUser === post.user._id && (
+              <PostMenu
+                postId={post._id}
+                onPostDeleted={handlePostDeleted}
+              />
+            )}
           </div>
           <div className="blogContent">
             <p>{post.caption}</p>

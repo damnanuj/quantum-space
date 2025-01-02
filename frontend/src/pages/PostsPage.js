@@ -5,7 +5,6 @@ import FeedTabs from "../components/FeedComponents/Tabs/FeedTabs";
 const PostsPage = () => {
   return (
     <>
-      {" "}
       <PostBlog />
       <FeedTabs />
     </>

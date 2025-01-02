@@ -5,6 +5,7 @@ import profile from "../../../imgs/blank-profile.png";
 import { UserContext } from "../../../context/userContext";
 import CommonButton from "../../Common/Button/CommonButton";
 import { createPostAPI } from "../../../utils/apis/feed/createPostAPI";
+import { message } from "antd";
 
 const PostBlog = () => {
   const { user } = useContext(UserContext);
@@ -22,7 +23,7 @@ const PostBlog = () => {
         };
         reader.readAsDataURL(file);
       } else {
-        alert("Please select an image file.");
+        message.info("Please select an image file.");
       }
     }
   };
@@ -33,7 +34,7 @@ const PostBlog = () => {
 
   const handlePost = async () => {
     if (!caption && !selectedImage) {
-      alert("Please provide either a caption or an image.");
+      message.info("Please provide either a caption or an image.");
       return;
     }
 
@@ -45,11 +46,11 @@ const PostBlog = () => {
         image: selectedImage,
       };
       await createPostAPI(payload);
-      alert("Post created successfully!");
+      message.success("Post created successfully!");
       setCaption("");
       setSelectedImage(null);
     } catch (error) {
-      alert("Failed to create post. Please try again.");
+      message.error("Failed to create post. Please try again.");
     } finally {
       setIsPosting(false);
     }

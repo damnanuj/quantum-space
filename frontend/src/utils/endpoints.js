@@ -18,7 +18,7 @@ export const userEndpoints = {
 
 export const postsEnpoints = {
   createPost: `${baseUrl}/posts/create`,
-  deletePost: `${baseUrl}/posts`,
+  deletePost:(postId) => `${baseUrl}/posts/delete/${postId}`,
   likeUnlikePost: (postId) => `${baseUrl}/posts/like-unlike/${postId}`,
   getLikedPosts: `${baseUrl}/posts`,
   getFollowingPosts: `${baseUrl}/posts`,
