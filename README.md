@@ -10,8 +10,10 @@ Quantum Space is a social media platform where users can post updates, interact 
 ### You can log in using the credentials below if you prefer not to sign up:
 - **Email** : natasha@gmail.com
 - **Password** : Anujkkk
+
 ![image](https://github.com/user-attachments/assets/435e56f6-c669-4eb4-ab3e-f60c3e753e5b)
 ![image](https://github.com/user-attachments/assets/05b6a220-2b24-43ef-b236-47273e88808e)
+![image](https://github.com/user-attachments/assets/0192f816-e53c-4ade-bead-a3679e8185af)
 
 ### Feel free to signup with the actual values for better usability.
 
