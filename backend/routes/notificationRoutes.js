@@ -1,7 +1,6 @@
 import express from "express";
 import { authenticateToken } from "../lib/middleware/authenticateToken.js";
 
-
 import {
   deleteNotifications,
   getNotifications,
