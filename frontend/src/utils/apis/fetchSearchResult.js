@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { userEndpoints } from "../endpoints";
 
 export const fetchSearchResult = async (searchQuery) => {
-  if (!searchQuery.trim()) return []; // Return empty array if input is empty
+ 
 
   try {
     const token = localStorage.getItem("quantum-space");
@@ -11,7 +11,8 @@ export const fetchSearchResult = async (searchQuery) => {
 
     const { userId } = jwtDecode(token); // Decode user info if needed
 
-    const response = await axios.get(userEndpoints.fetchSearchQuery(searchQuery),
+    const response = await axios.get(
+      userEndpoints.fetchSearchQuery(searchQuery),
       {
         headers: { Authorization: `Bearer ${token}` },
       }

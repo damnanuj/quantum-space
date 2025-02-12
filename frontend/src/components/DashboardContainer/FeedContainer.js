@@ -17,6 +17,7 @@ const FeedContainer = () => {
   return (
     <div className={`main_dashboard ${isProfilePage ? "profile_active" : ""}`}>
       <div className="left_dashboard">
+     
         <SmallProfile />
       </div>
       <div className="middle_dashboard">

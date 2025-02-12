@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { jwtDecode } from "jwt-decode";
-import UsersList from "../UsersList/UsersList";
 import { fetchSearchResult } from "../../../utils/apis/fetchSearchResult";
+import SearchResultBox from "./SearchResultBox";
 
 const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -10,20 +8,35 @@ const SearchBar = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSuggestions([]); // Clear suggestions if input is empty
+      return;
+    }
+
     const fetchUsers = async () => {
       setLoading(true);
-      const users = await fetchSearchResult(searchQuery);
-      setSuggestions(users);
+      try {
+        const users = await fetchSearchResult(searchQuery);
+
+        // Ensure the latest search result matches the current query
+        setSuggestions(users.length > 0 ? users : []);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        setSuggestions([]); // Ensure it's cleared on error
+      }
       setLoading(false);
     };
 
-    // Debounce API calls (wait 500ms after user stops typing)
-    const timer = setTimeout(() => {
-      fetchUsers();
-    }, 500);
+    const timer = setTimeout(fetchUsers, 500); // Debounce input
 
-    return () => clearTimeout(timer); // Cleanup function
+    return () => clearTimeout(timer);
   }, [searchQuery]);
+
+  // Function to handle user click and reset input
+  const handleUserClick = () => {
+    setSearchQuery(""); // Clear input field
+    setSuggestions([]); // Clear suggestions
+  };
 
   return (
     <div className="header_middle">
@@ -35,19 +48,13 @@ const SearchBar = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
 
-      {/* Display suggestions below */}
-      {loading && <p>Loading...</p>}
-      {suggestions.length > 0 && (
-        <div className="suggestions_list">
-          {suggestions.map((user) => (
-            <UsersList
-              key={user._id} // Always add a unique key when mapping
-              name={user.name}
-              username={user.username}
-              profileImg={user.profilePicture}
-            />
-          ))}
-        </div>
+      {/* Ensure SearchResultBox shows loading & "No results found" correctly */}
+      {(suggestions.length > 0 || loading || searchQuery) && (
+        <SearchResultBox
+          loading={loading}
+          searchResult={suggestions}
+          onUserClick={handleUserClick}
+        />
       )}
     </div>
   );

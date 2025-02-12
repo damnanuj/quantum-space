@@ -1,0 +1,21 @@
+@import "../../../colors.scss";
+
+.searchResultContainer {
+  padding: 1rem;
+  z-index: 99999;
+  position: fixed;
+  top: calc(60px + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: auto;
+  background-color: $dark-light-color;
+
+  border-radius: 20px;
+  box-shadow: -1px 1px 15px 1px $dark-main-color;
+}
+.noResults{
+    text-align: center;
+    color: $dark-error-color;
+    font-weight: bold;
+}
