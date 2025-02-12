@@ -57,7 +57,7 @@ const UserProfile = () => {
 
   // Determine which user details to display
   const displayedUser = isLoggedUser ? user : fetchedUser;
-  console.log(displayedUser);
+  // console.log(displayedUser);
 
   return (
     <div className="userProfileContainer">

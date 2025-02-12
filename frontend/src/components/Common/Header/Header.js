@@ -4,6 +4,7 @@ import "./Header.scss";
 
 import DropMenu from "../../ProfileDropDown/DropMenu";
 import MobileDrawer from "../../MobileDrawer/MobileDrawer";
+import SearchBar from "../Searchbar/SearchBar";
 
 const Header = () => {
   const navItems = [
@@ -27,9 +28,7 @@ const Header = () => {
         <Link to="/"><h1 className="logo">QuantumSpace</h1></Link>
       </div>
 
-      <div className="header_middle">
-        <input className="explore_search" type="text" placeholder="#explore" />
-      </div>
+      <SearchBar/>
 
       <div className="header_right">
         {navItems.map((item) => (

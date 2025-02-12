@@ -8,7 +8,6 @@ const FeedPage = () => {
     <>
       <Header />
       <FeedContainer />
-   
     </>
   );
 };
