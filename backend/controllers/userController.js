@@ -119,59 +119,62 @@ export const followUnfollowUser = async (req, res) => {
 };
 
 // >>================User Suggestions with Pagination=========================>
-export const getUserSuggestions = async (req, res) => {
-  try {
-    const loggedUserId = req.user.userId; // ID of the authenticated user
-
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 5;
-
-    // Calculate the number of items to skip based on the current page
-    const skip = (page - 1) * limit;
-
-    // >>=======List of users that the logged user is already following==========>
-    const userFollowedByMe = await User.findById(loggedUserId).select(
-      "following"
-    );
-    const followingIds = userFollowedByMe.following.map((user) =>
-      user.toString()
-    );
-
-    // >>==============To exclude myself from suggestions================>
-    followingIds.push(loggedUserId.toString());
-
-    // >>========Find users that the logged user is not following with pagination=====>
-    const suggestedUsers = await User.find({
-      _id: { $nin: followingIds }, // Exclude those userIds
-    })
-      .select("name username profilePicture about gender") // Include only necessary fields
-      .skip(skip)
-      .limit(limit);
-
-    // >>=======Calculate total count of suggestions without pagination for reference=========>
-    const totalSuggestions = await User.countDocuments({
-      _id: { $nin: followingIds },
-    });
-
-    // >>=======Final suggestions data with pagination details==========>
-    res.status(200).json({
-      success: true,
-      count: suggestedUsers.length,
-      totalSuggestions,
-      currentPage: page,
-      totalPages: Math.ceil(totalSuggestions / limit),
-      message: "User suggestions fetched successfully",
-      data: suggestedUsers,
-    });
-  } catch (error) {
-    console.log("Error in getUserSuggestions Controller:", error.message);
-    return res.status(500).json({
-      success: false,
-      error: "Internal server error",
-      message: error.message,
-    });
-  }
-};
+  export const getUserSuggestions = async (req, res) => {
+    try {
+      const loggedUserId = req.user.userId; // ID of the authenticated user
+      const { search, page = 1, limit = 5 } = req.query;
+  
+      const skip = (page - 1) * limit;
+  
+      // Get list of users that the logged-in user is already following
+      const userFollowedByMe = await User.findById(loggedUserId).select(
+        "following"
+      );
+      const followingIds = userFollowedByMe.following.map((user) =>
+        user.toString()
+      );
+      followingIds.push(loggedUserId.toString()); // Exclude logged-in user
+  
+      let filter = { _id: { $nin: followingIds } };
+  
+      // If search query is provided, filter by name or username
+      if (search) {
+        filter.$or = [
+          { name: { $regex: search, $options: "i" } }, // Case-insensitive search in 'name'
+          { username: { $regex: search, $options: "i" } }, // Case-insensitive search in 'username'
+        ];
+      }
+  
+      // Fetch filtered users with pagination
+      const suggestedUsers = await User.find(filter)
+        .select("name username profilePicture about gender")
+        .skip(skip)
+        .limit(parseInt(limit));
+  
+      // Count total suggestions
+      const totalSuggestions = await User.countDocuments(filter);
+  
+      res.status(200).json({
+        success: true,
+        count: suggestedUsers.length,
+        totalSuggestions,
+        currentPage: page,
+        totalPages: Math.ceil(totalSuggestions / limit),
+        message: search
+          ? `Search results for "${search}"`
+          : "User suggestions fetched successfully",
+        data: suggestedUsers,
+      });
+    } catch (error) {
+      console.error("Error in getUserSuggestions Controller:", error.message);
+      return res.status(500).json({
+        success: false,
+        error: "Internal server error",
+        message: error.message,
+      });
+    }
+  };
+  
 
 // >>================Update User Profile==================================>>
 export const updateUserProfile = async (req, res) => {
