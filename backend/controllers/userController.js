@@ -7,10 +7,16 @@ import bcrypt from "bcryptjs";
 
 // >>================get the user Profile Details==================================>>
 export const getUserProfile = async (req, res) => {
-  const { username } = req.params;
+  const { usernameOrId } = req.params;
 
   try {
-    const user = await User.findOne({ username }).select("-password");
+    let user;
+
+    if (mongoose.Types.ObjectId.isValid(usernameOrId)) {
+      user = await User.findById(usernameOrId).select("-password");
+    } else {
+      user = await User.findOne({ username: usernameOrId }).select("-password");
+    }
     if (!user)
       return res.status(404).json({
         success: false,
@@ -119,62 +125,61 @@ export const followUnfollowUser = async (req, res) => {
 };
 
 // >>================User Suggestions with Pagination=========================>
-  export const getUserSuggestions = async (req, res) => {
-    try {
-      const loggedUserId = req.user.userId; // ID of the authenticated user
-      const { search, page = 1, limit = 5 } = req.query;
-  
-      const skip = (page - 1) * limit;
-  
-      // Get list of users that the logged-in user is already following
-      const userFollowedByMe = await User.findById(loggedUserId).select(
-        "following"
-      );
-      const followingIds = userFollowedByMe.following.map((user) =>
-        user.toString()
-      );
-      followingIds.push(loggedUserId.toString()); // Exclude logged-in user
-  
-      let filter = { _id: { $nin: followingIds } };
-  
-      // If search query is provided, filter by name or username
-      if (search) {
-        filter.$or = [
-          { name: { $regex: search, $options: "i" } }, // Case-insensitive search in 'name'
-          { username: { $regex: search, $options: "i" } }, // Case-insensitive search in 'username'
-        ];
-      }
-  
-      // Fetch filtered users with pagination
-      const suggestedUsers = await User.find(filter)
-        .select("name username profilePicture about gender")
-        .skip(skip)
-        .limit(parseInt(limit));
-  
-      // Count total suggestions
-      const totalSuggestions = await User.countDocuments(filter);
-  
-      res.status(200).json({
-        success: true,
-        count: suggestedUsers.length,
-        totalSuggestions,
-        currentPage: page,
-        totalPages: Math.ceil(totalSuggestions / limit),
-        message: search
-          ? `Search results for "${search}"`
-          : "User suggestions fetched successfully",
-        data: suggestedUsers,
-      });
-    } catch (error) {
-      console.error("Error in getUserSuggestions Controller:", error.message);
-      return res.status(500).json({
-        success: false,
-        error: "Internal server error",
-        message: error.message,
-      });
+export const getUserSuggestions = async (req, res) => {
+  try {
+    const loggedUserId = req.user.userId; // ID of the authenticated user
+    const { search, page = 1, limit = 5 } = req.query;
+
+    const skip = (page - 1) * limit;
+
+    // Get list of users that the logged-in user is already following
+    const userFollowedByMe = await User.findById(loggedUserId).select(
+      "following"
+    );
+    const followingIds = userFollowedByMe.following.map((user) =>
+      user.toString()
+    );
+    followingIds.push(loggedUserId.toString()); // Exclude logged-in user
+
+    let filter = { _id: { $nin: followingIds } };
+
+    // If search query is provided, filter by name or username
+    if (search) {
+      filter.$or = [
+        { name: { $regex: search, $options: "i" } }, // Case-insensitive search in 'name'
+        { username: { $regex: search, $options: "i" } }, // Case-insensitive search in 'username'
+      ];
     }
-  };
-  
+
+    // Fetch filtered users with pagination
+    const suggestedUsers = await User.find(filter)
+      .select("name username profilePicture about gender")
+      .skip(skip)
+      .limit(parseInt(limit));
+
+    // Count total suggestions
+    const totalSuggestions = await User.countDocuments(filter);
+
+    res.status(200).json({
+      success: true,
+      count: suggestedUsers.length,
+      totalSuggestions,
+      currentPage: page,
+      totalPages: Math.ceil(totalSuggestions / limit),
+      message: search
+        ? `Search results for "${search}"`
+        : "User suggestions fetched successfully",
+      data: suggestedUsers,
+    });
+  } catch (error) {
+    console.error("Error in getUserSuggestions Controller:", error.message);
+    return res.status(500).json({
+      success: false,
+      error: "Internal server error",
+      message: error.message,
+    });
+  }
+};
 
 // >>================Update User Profile==================================>>
 export const updateUserProfile = async (req, res) => {
