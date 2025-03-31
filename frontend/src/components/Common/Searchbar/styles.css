@@ -1,0 +1,21 @@
+.searchResultContainer {
+  padding: 1rem;
+  z-index: 99999;
+  position: fixed;
+  top: 65px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  width: 400px;
+  height: auto;
+  background-color: #1a2730;
+  border-radius: 20px;
+  -webkit-box-shadow: -1px 1px 15px 1px #06141d;
+          box-shadow: -1px 1px 15px 1px #06141d;
+}
+
+.noResults {
+  text-align: center;
+  color: #dc172a;
+  font-weight: bold;
+}/*# sourceMappingURL=styles.css.map */

@@ -10,32 +10,41 @@ import UpdateDetails from "../../features/updateProfile/UpdateDetails";
 import { UserContext } from "../../../context/userContext";
 
 const UserProfile = () => {
-  const { username } = useParams();
+  const { username: userId } = useParams();
   const { user, setUser } = useContext(UserContext);
-
   const [fetchedUser, setFetchedUser] = useState(null);
   const [isLoggedUser, setIsLoggedUser] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  console.log(userId);
+
   useEffect(() => {
     const fetchUserData = async () => {
       setLoading(true);
       setError(null);
+      setFetchedUser(null); // Reset fetchedUser before new fetch
       try {
-        const userProfile = await fetchUserProfile(username);
-        if (userProfile.success === false) {
-          throw new Error(userProfile.message);
+        console.log("Fetching profile for userId:", userId);
+
+        const userProfile = await fetchUserProfile(userId);
+        console.log("Fetched user profile:", userProfile);
+
+        if (!userProfile || userProfile.success === false) {
+          throw new Error(
+            userProfile?.message || "Failed to fetch user profile."
+          );
         }
 
-        // Check if the fetched user is the logged-in user
+        setUser(userProfile.data);
+
+        // Ensure correct user identification
         const token = localStorage.getItem("quantum-space");
         if (token) {
           const decoded = jwtDecode(token);
-          const isAuthUser = username === decoded.username || !username;
+          const isAuthUser = userId === decoded.userId || !userId;
 
           setIsLoggedUser(isAuthUser);
-
           if (isAuthUser) {
             setUser(userProfile.data);
           } else {
@@ -43,6 +52,7 @@ const UserProfile = () => {
           }
         }
       } catch (err) {
+        console.error("Error fetching user profile:", err);
         setError(err.message || "An error occurred.");
       } finally {
         setLoading(false);
@@ -50,7 +60,7 @@ const UserProfile = () => {
     };
 
     fetchUserData();
-  }, [username, setUser]);
+  }, [userId, setUser]);
 
   if (loading) return <UserProfilePageSkeleton />;
   if (error) return <div>{error}</div>;
