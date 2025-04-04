@@ -36,7 +36,7 @@ const UserProfile = () => {
           );
         }
 
-        setUser(userProfile.data);
+        // setUser(userProfile.data);
 
         // Ensure correct user identification
         const token = localStorage.getItem("quantum-space");
