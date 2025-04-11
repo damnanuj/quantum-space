@@ -6,7 +6,7 @@ import "./feedTabs.scss";
 import Posts from "../Posts/Posts";
 
 const onChange = (key) => {
-  console.log(key);
+  // console.log(key);
 };
 const items = [
   {

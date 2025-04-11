@@ -17,7 +17,7 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  console.log(userId);
+  
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -25,19 +25,17 @@ const UserProfile = () => {
       setError(null);
       setFetchedUser(null); // Reset fetchedUser before new fetch
       try {
-        console.log("Fetching profile for userId:", userId);
+        // console.log("Fetching profile for userId:", userId);
 
         const userProfile = await fetchUserProfile(userId);
-        console.log("Fetched user profile:", userProfile);
+        // console.log("Fetched user profile:", userProfile);
 
         if (!userProfile || userProfile.success === false) {
           throw new Error(
             userProfile?.message || "Failed to fetch user profile."
           );
         }
-
         // setUser(userProfile.data);
-
         // Ensure correct user identification
         const token = localStorage.getItem("quantum-space");
         if (token) {
