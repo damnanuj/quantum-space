@@ -17,8 +17,6 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  
-
   useEffect(() => {
     const fetchUserData = async () => {
       setLoading(true);
@@ -96,9 +94,11 @@ const UserProfile = () => {
           <p>@{displayedUser?.username}</p>
           <p>{displayedUser?.about}</p>
           <p>
+            {displayedUser?.location?.state}{" "}
             {displayedUser?.location?.city},{" "}
             {displayedUser?.location?.country || "Location not provided"}
           </p>
+      
           <div className="stats">
             <div>
               <strong>{displayedUser?.followers?.length || "0"}</strong>{" "}
@@ -109,6 +109,7 @@ const UserProfile = () => {
               Following
             </div>
           </div>
+         
         </div>
 
         <div className="editFollowButton">
@@ -120,6 +121,7 @@ const UserProfile = () => {
               text={displayedUser?.isFollowed ? "Following" : "Follow"}
             />
           )}
+             <div className="websiteLink">{displayedUser?.website &&  <a  href={displayedUser?.website} target="_blank" >Visit website</a>}</div>
         </div>
       </div>
     </div>
