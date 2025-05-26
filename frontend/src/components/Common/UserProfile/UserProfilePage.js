@@ -17,27 +17,23 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  console.log(userId);
-
   useEffect(() => {
     const fetchUserData = async () => {
       setLoading(true);
       setError(null);
       setFetchedUser(null); // Reset fetchedUser before new fetch
       try {
-        console.log("Fetching profile for userId:", userId);
+        // console.log("Fetching profile for userId:", userId);
 
         const userProfile = await fetchUserProfile(userId);
-        console.log("Fetched user profile:", userProfile);
+        // console.log("Fetched user profile:", userProfile);
 
         if (!userProfile || userProfile.success === false) {
           throw new Error(
             userProfile?.message || "Failed to fetch user profile."
           );
         }
-
         // setUser(userProfile.data);
-
         // Ensure correct user identification
         const token = localStorage.getItem("quantum-space");
         if (token) {
@@ -98,9 +94,11 @@ const UserProfile = () => {
           <p>@{displayedUser?.username}</p>
           <p>{displayedUser?.about}</p>
           <p>
+            {displayedUser?.location?.state}{" "}
             {displayedUser?.location?.city},{" "}
             {displayedUser?.location?.country || "Location not provided"}
           </p>
+      
           <div className="stats">
             <div>
               <strong>{displayedUser?.followers?.length || "0"}</strong>{" "}
@@ -111,6 +109,7 @@ const UserProfile = () => {
               Following
             </div>
           </div>
+         
         </div>
 
         <div className="editFollowButton">
@@ -122,6 +121,7 @@ const UserProfile = () => {
               text={displayedUser?.isFollowed ? "Following" : "Follow"}
             />
           )}
+             <div className="websiteLink">{displayedUser?.website &&  <a  href={displayedUser?.website} target="_blank" >Visit website</a>}</div>
         </div>
       </div>
     </div>

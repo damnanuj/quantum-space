@@ -2,7 +2,7 @@ import axios from "axios";
 import { postsEnpoints } from "../../endpoints";
 import { jwtDecode } from "jwt-decode";
 
-export const fetchUserPosts = async (pageNumber, userId) => {
+export const fetchUserPosts = async ({pageNumber, userId}) => {
   try {
     const token = localStorage.getItem("quantum-space");
 

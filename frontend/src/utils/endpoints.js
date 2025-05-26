@@ -1,4 +1,4 @@
-const baseUrl = "https://quantum-space.onrender.com/api";
+export const baseUrl = "https://quantum-space.onrender.com/api";
 // const baseUrl = "http://localhost:8000/api";
 
 // >>=============authentication endpoints===================>>

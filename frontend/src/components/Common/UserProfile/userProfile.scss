@@ -49,6 +49,7 @@
 }
 
 .detailsContainer {
+  position: relative;
   width: 90%;
   display: flex;
   justify-content: space-between;
@@ -86,10 +87,13 @@
   }
 
   .editFollowButton {
-    flex: 1;
+   
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-start;
+    flex-direction: column;
+    display: flex;
+    justify-content: space-between;
+  gap: 10px;
+    align-items: center;
 
     .editButton,
     .followButton {
@@ -126,4 +130,13 @@
 }
 .coverPhoto :where(.css-dev-only-do-not-override-d2lrxs).ant-skeleton.ant-skeleton-element {
   width: 100%;
+}
+
+.websiteLink{
+ 
+ a{
+  font-size: 12px;
+  color:$dark-notification-color
+ }
+  
 }

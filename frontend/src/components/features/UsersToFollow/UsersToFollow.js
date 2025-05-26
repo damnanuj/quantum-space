@@ -22,7 +22,7 @@ const UsersToFollow = ({ onCloseDrawer }) => {
         setSuggestions((prev) => [...prev, ...response.data]); // Append new suggestions
         setPages(response.totalPages); // Update total pages
       }
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.error("Failed to fetch suggestions:", error);
     } finally {

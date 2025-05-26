@@ -6,6 +6,8 @@ import { isTokenValid } from "./utils/isTokenValid";
 import ProfilePage from "./pages/ProfilePage";
 import PostsPage from "./pages/PostsPage";
 import { UserProvider } from "./context/userContext";
+import { baseUrl } from "./utils/endpoints";
+import axios from "axios";
 
 const Homepage = lazy(() => import("./pages/Homepage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
@@ -17,9 +19,16 @@ function App() {
   const [isUserLogged, setIsUserLogged] = useState(null);
   const navigate = useNavigate();
 
+  // this is just to awake the server
+  useEffect(() => {
+    axios.get(baseUrl).catch(() => {});
+  }, []);
+
   useEffect(() => {
     const loggedIn = isTokenValid();
     setIsUserLogged(loggedIn);
+    
+    
 
     const currentPath = window.location.pathname;
 
