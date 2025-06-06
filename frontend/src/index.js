@@ -5,10 +5,13 @@ import App from "./App";
 import "material-icons/iconfont/material-icons.css";
 import "./colors.scss";
 import { BrowserRouter } from "react-router-dom";
+import { UserProvider } from "./context/userContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <App />
+    <UserProvider>
+      <App />
+    </UserProvider>
   </BrowserRouter>
 );

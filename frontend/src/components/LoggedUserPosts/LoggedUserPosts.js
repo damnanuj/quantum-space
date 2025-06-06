@@ -9,16 +9,19 @@ const LoggedUserPosts = () => {
   const [error, setError] = useState(null);
   const [loggedInUser, setLoggedInUser] = useState(null);
 
-  const { userId } = useParams();
+  const {  username: userId  } = useParams();
+
+  console.log("userIddfd",userId)
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const { response, status } = await fetchUserPosts(userId);
+        const { response, status } = await fetchUserPosts({userId});
         console.log("<<<<<<<<<<<<", response, status);
 
         if (response.success) {
           setPosts(response.data);
+          
           setLoggedInUser(userId);
         } else {
           throw new Error(response.message || "Failed to fetch posts.");
@@ -31,7 +34,7 @@ const LoggedUserPosts = () => {
     };
 
     fetchPosts();
-  }, []);
+  }, [userId]);
 
   return (
     <PostCard

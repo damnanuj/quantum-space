@@ -11,7 +11,7 @@ const SmallProfile = ({ onCloseDrawer }) => {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  console.log("user",user)
   const handleNavigation = () => {
     // Close the drawer and navigate to the profile page
     //this is while on  mobile view

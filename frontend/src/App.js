@@ -1,11 +1,13 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { lazy, useEffect, useState } from "react";
+import { lazy, useContext, useEffect, useState } from "react";
 import "./App.scss";
 import LoadingWrapper from "./components/Common/LoadingWrapper/LoadingWrapper";
 import { isTokenValid } from "./utils/isTokenValid";
 import ProfilePage from "./pages/ProfilePage";
 import PostsPage from "./pages/PostsPage";
-import { UserProvider } from "./context/userContext";
+import { UserContext, UserProvider } from "./context/userContext";
+import { jwtDecode } from "jwt-decode";
+import { fetchUserProfile } from "./utils/apis/feed/fetchUserProfile";
 
 const Homepage = lazy(() => import("./pages/Homepage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
@@ -16,6 +18,7 @@ const WrongRoute = lazy(() => import("./pages/WrongRoute"));
 function App() {
   const [isUserLogged, setIsUserLogged] = useState(null);
   const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
     const loggedIn = isTokenValid();
@@ -38,39 +41,50 @@ function App() {
     }
   }, [navigate, isUserLogged, window.location.pathname]);
 
+  useEffect(() => {
+    const token = localStorage.getItem("quantum-space");
+    if (token) {
+      const decoded = jwtDecode(token);
+      console.log("decoded", decoded);
+      const fetchUserData = async () => {
+        const userData = await fetchUserProfile(decoded.userId);
+        setUser(userData);
+      };
+      fetchUserData();
+    }
+  }, []);
+
   return (
     <div className="App">
-      <UserProvider>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<LoadingWrapper Component={Homepage} />} />
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<LoadingWrapper Component={Homepage} />} />
 
-          {!isUserLogged && (
-            <>
-              <Route
-                path="/login"
-                element={<LoadingWrapper Component={LoginPage} />}
-              />
-              <Route
-                path="/signup"
-                element={<LoadingWrapper Component={SignupPage} />}
-              />
-            </>
-          )}
+        {!isUserLogged && (
+          <>
+            <Route
+              path="/login"
+              element={<LoadingWrapper Component={LoginPage} />}
+            />
+            <Route
+              path="/signup"
+              element={<LoadingWrapper Component={SignupPage} />}
+            />
+          </>
+        )}
 
-          {/* Protected Routes */}
-          {isUserLogged && (
-            <>
-              <Route path="/" element={<LoadingWrapper Component={Feed} />}>
-                <Route path="/feed" element={<PostsPage />} />
-                <Route path="/profile/:username" element={<ProfilePage />} />
-              </Route>
-            </>
-          )}
-          {/* fallback ui 404 */}
-          <Route path="*" element={<LoadingWrapper Component={WrongRoute} />} />
-        </Routes>
-      </UserProvider>
+        {/* Protected Routes */}
+        {isUserLogged && (
+          <>
+            <Route path="/" element={<LoadingWrapper Component={Feed} />}>
+              <Route path="/feed" element={<PostsPage />} />
+              <Route path="/profile/:username" element={<ProfilePage />} />
+            </Route>
+          </>
+        )}
+        {/* fallback ui 404 */}
+        <Route path="*" element={<LoadingWrapper Component={WrongRoute} />} />
+      </Routes>
     </div>
   );
 }
