@@ -9,9 +9,7 @@ const LoggedUserPosts = () => {
   const [error, setError] = useState(null);
   const [loggedInUser, setLoggedInUser] = useState(null);
 
-  const {  username: userId  } = useParams();
-
-  console.log("userIddfd",userId)
+  const { username:userId } = useParams();
 
   useEffect(() => {
     const fetchPosts = async () => {

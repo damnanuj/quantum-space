@@ -20,7 +20,7 @@ export const fetchUserProfile = async (userId) => {
       }
     );
 
-    console.log("response>>>>>>>>>", response);
+    // console.log("response>>>>>>>>>", response);
 
     return response.data;
   } catch (error) {

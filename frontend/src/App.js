@@ -5,9 +5,9 @@ import LoadingWrapper from "./components/Common/LoadingWrapper/LoadingWrapper";
 import { isTokenValid } from "./utils/isTokenValid";
 import ProfilePage from "./pages/ProfilePage";
 import PostsPage from "./pages/PostsPage";
-import { UserContext, UserProvider } from "./context/userContext";
-import { jwtDecode } from "jwt-decode";
-import { fetchUserProfile } from "./utils/apis/feed/fetchUserProfile";
+import { UserProvider } from "./context/userContext";
+import { baseUrl } from "./utils/endpoints";
+import axios from "axios";
 
 const Homepage = lazy(() => import("./pages/Homepage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
@@ -19,6 +19,11 @@ function App() {
   const [isUserLogged, setIsUserLogged] = useState(null);
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
+
+  // this is just to awake the server
+  useEffect(() => {
+    axios.get(baseUrl).catch(() => {});
+  }, []);
 
   useEffect(() => {
     const loggedIn = isTokenValid();
