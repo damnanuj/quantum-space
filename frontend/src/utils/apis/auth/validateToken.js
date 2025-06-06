@@ -8,14 +8,14 @@ export const validateToken = async () => {
     });
 
     if (response.status === 200 && response.data.success) {
-      console.log("success");
+      // console.log("success");
       return { success: true, user: response.data.user };
     } else {
-      console.log("false");
+      // console.log("false");
       return { success: false };
     }
   } catch (error) {
-    console.error("Error validating token", error);
+    // console.error("Error validating token", error);
     return {
       success: false,
       message: error.response?.data?.message || error.message,

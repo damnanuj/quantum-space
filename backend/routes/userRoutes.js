@@ -11,7 +11,7 @@ import {
 
 const router = express.Router();
 
-router.get("/profile/:username", authenticateToken, getUserProfile);
+router.get("/profile/:usernameOrId", authenticateToken, getUserProfile);
 router.get("/suggestions", authenticateToken, getUserSuggestions);
 router.get(
   "/followUnfollow/:targetUserId",

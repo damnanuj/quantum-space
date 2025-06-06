@@ -20,7 +20,7 @@ export const updateProfileDetails = async (updatedValues) => {
 
     return response.data;
   } catch (error) {
-    console.log("Error updating profile:", error);
+    // console.log("Error updating profile:", error);
     return error;
   }
 };

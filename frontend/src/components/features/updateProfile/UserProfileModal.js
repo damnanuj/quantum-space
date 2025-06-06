@@ -42,11 +42,11 @@ const UserProfileModal = ({ visible, onCancel }) => {
 
         onCancel();
       } else {
-        console.log("=====",response);
+        // console.log("=====",response);
         message.error(response.response.data.message || "Failed to update profile. Please try again.");
       }
     } catch (info) {
-      console.log("Validation Failed:", info);
+      // console.log("Validation Failed:", info);
       message.error("Please fill out all required fields.");
     } finally {
       setLoading(false);

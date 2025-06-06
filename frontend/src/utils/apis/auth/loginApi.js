@@ -17,16 +17,15 @@ export async function loginApi(loginFormData) {
     const response = await axios.post(authEndpoints.login, loginFormData);
     const { message: serverMessage, success, token } = response.data;
 
-    // Save token if it exists
+    //>>====== Save token if it exists ==========>>
     if (token) {
       saveToken(token);
     }
 
-    // Show success notification
+    //>>============= Show success notification =============>>
     showNotification("success", serverMessage);
 
-    // Return response data
-    return { success: success === true};
+    return { success: success || true };
   } catch (error) {
     console.error(error);
 

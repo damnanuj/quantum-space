@@ -17,5 +17,3 @@ export const timeAgo = (timestamp) => {
   const years = Math.floor(days / 365);
   return `${years} year${years > 1 ? "s" : ""} ago`;
 };
-
-

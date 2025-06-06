@@ -1,0 +1,102 @@
+.header_container {
+  position: sticky;
+  top: 0;
+  background-color: #030f16;
+  z-index: 1000;
+  height: 65px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0 2rem;
+  -webkit-box-shadow: 1px 1px 8px 1px #06141d;
+          box-shadow: 1px 1px 8px 1px #06141d;
+}
+.header_container .header_left {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 1rem;
+}
+.header_container .header_left a {
+  text-decoration: none;
+}
+.header_container .header_left .logo {
+  font-family: "Oregano", cursive;
+  font-size: 35px;
+  color: #359EAB;
+}
+.header_container .header_right {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 20px;
+}
+.header_container .header_right .dropmenu {
+  color: #DBEAEE;
+  font-size: 25px !important;
+}
+
+.nav_icon {
+  color: #DBEAEE;
+  font-size: 25px !important;
+}
+.nav_icon.active {
+  color: #359EAB !important;
+}
+
+.explore_search {
+  width: 350px;
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: 1px solid #28353e;
+  color: #fafafa;
+  font-weight: 600;
+  font-size: 16px;
+  font-family: "Nunito";
+  background-color: #1a2730;
+  font-weight: 400;
+}
+
+.explore_search:focus {
+  outline: 1px dotted #359EAB;
+}
+
+.MobileDrawer {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .css-1ge85tx-MuiButtonBase-root-MuiIconButton-root {
+    padding: 0 !important;
+  }
+  .menu {
+    font-size: 1.8rem !important;
+  }
+  .logo {
+    font-size: 30px !important;
+  }
+  .MobileDrawer {
+    display: block;
+  }
+  .header_container {
+    padding: 0 1rem;
+  }
+  .header_container .explore_search {
+    display: none;
+  }
+  .header_container .header_right {
+    gap: 8px;
+  }
+}/*# sourceMappingURL=Header.css.map */

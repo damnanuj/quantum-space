@@ -84,7 +84,7 @@ const SmallProfile = ({ onCloseDrawer }) => {
         </div>
 
         <div className="myProfileBtn">
-          <Link onClick={handleNavigation} to={`/profile/${user.username}`}>
+          <Link onClick={handleNavigation} to={`/profile/${user._id}`}>
             My Profile
           </Link>
         </div>

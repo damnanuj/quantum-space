@@ -3,12 +3,12 @@ import "./UsersList.scss";
 import CommonButton from "../Button/CommonButton";
 import { useNavigate } from "react-router-dom";
 
-const UsersList = ({ name, username, profileImg , onCloseDrawer }) => {
+const UsersList = ({ name, userId,username, profileImg , onCloseDrawer }) => {
   const navigate = useNavigate();
 
   function redirectToProfilePage() {
     if (onCloseDrawer) onCloseDrawer();
-    navigate(`/profile/${username}`);
+    navigate(`/profile/${userId}`);
   }
   return (
     <div className="UsersList_container">

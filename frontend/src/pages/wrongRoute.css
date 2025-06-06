@@ -1,0 +1,55 @@
+.wrongRoutePage {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+.wrongRoutePage .oop {
+  font-size: 20px;
+  color: #DBEAEE;
+}
+.wrongRoutePage .errCode {
+  color: #dc172a;
+  margin-top: 10px;
+}
+.wrongRoutePage div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.wrongRoutePage div .four {
+  color: #DBEAEE;
+}
+.wrongRoutePage div .four, .wrongRoutePage div .sadEmoji {
+  font-size: 230px;
+}
+.wrongRoutePage div .sadEmoji {
+  color: #dc172a;
+}
+.wrongRoutePage .home {
+  margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+  .oop {
+    font-size: 15px !important;
+  }
+  .four, .sadEmoji {
+    font-size: 120px !important;
+  }
+}/*# sourceMappingURL=wrongRoute.css.map */

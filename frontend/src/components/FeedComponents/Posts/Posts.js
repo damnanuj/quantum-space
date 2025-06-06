@@ -17,7 +17,7 @@ const Posts = () => {
   const [pages, setPages] = useState(1);
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
 
-  // Fetch posts based on page number
+  //>>============= Fetch posts based on page number=================>>
   const fetchPosts = async (page) => {
     try {
       setIsFetchingNextPage(true);
@@ -43,14 +43,14 @@ const Posts = () => {
     fetchPosts(pageNumber);
   }, [pageNumber]);
 
-  // Load more posts
+  //>>========= Load more posts ===============>>
   const loadMorePosts = () => {
     if (pageNumber < pages && !isFetchingNextPage) {
       setPageNumber((prevPage) => prevPage + 1);
     }
   };
 
-  const isLastPage = pageNumber >= pages; 
+  const isLastPage = pageNumber >= pages;
 
   //>>============ Handle like/unlike ===============>>
   const handleLikeUnlike = async (postId) => {
@@ -77,8 +77,8 @@ const Posts = () => {
     }
   };
 
-   //>>======= Handle post deletion ==========>>
-   const handlePostDeleted = (postId) => {
+  //>>======= Handle post deletion ==========>>
+  const handlePostDeleted = (postId) => {
     setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
   };
 
@@ -100,10 +100,7 @@ const Posts = () => {
               <span>@{post.user.username}</span>
             </div>
             {loggedInUser === post.user._id && (
-              <PostMenu
-                postId={post._id}
-                onPostDeleted={handlePostDeleted}
-              />
+              <PostMenu postId={post._id} onPostDeleted={handlePostDeleted} />
             )}
           </div>
           <div className="blogContent">

@@ -2,22 +2,25 @@ import axios from "axios";
 import { userEndpoints } from "../../endpoints";
 import { jwtDecode } from "jwt-decode";
 
-export const fetchUserProfile = async (username = null) => {
+export const fetchUserProfile = async (userId) => {
   try {
     const token = localStorage.getItem("quantum-space");
     if (!token) {
       throw new Error("No authentication token found. Please log in.");
     }
-
+    //  fetch user's profile by the userId
     const decoded = jwtDecode(token);
 
-    const targetUsername = username || decoded.username;
+    const response = await axios.get(
+      userEndpoints.getUser(userId || decoded.userId),
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-    const response = await axios.get(userEndpoints.getUser(targetUsername), {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    // console.log("response>>>>>>>>>", response);
 
     return response.data;
   } catch (error) {

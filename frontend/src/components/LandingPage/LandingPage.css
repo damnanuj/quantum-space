@@ -1,0 +1,160 @@
+.LandingPageContainer {
+  padding: 0 2rem;
+  width: 100%;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  /* ==================   left parts   ======================================== */
+  /* ==================   Right part   ======================================== */
+}
+.LandingPageContainer .homeLeft {
+  width: 55%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.LandingPageContainer .homeLeft .HeadingDescContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1.5rem;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.LandingPageContainer .homeLeft .HeadingDescContainer .heading {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 90%;
+  line-height: 90px;
+  text-align: center;
+  font-size: 4rem;
+  font-family: poppins;
+  color: #DBEAEE;
+  font-weight: 700;
+}
+.LandingPageContainer .homeLeft .HeadingDescContainer .heading .spaceHeading {
+  font-family: "Oregano", cursive;
+  font-size: 7rem;
+  color: #359EAB;
+}
+.LandingPageContainer .homeLeft .HeadingDescContainer .desc {
+  width: 90%;
+  font-family: "poppins";
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-align: center;
+  color: #DBEAEE;
+  line-height: 35px;
+}
+.LandingPageContainer .homeLeft .HomePageButtonsFlex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 2rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.LandingPageContainer .homeLeft .HomePageButtonsFlex .btn {
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: poppins;
+  padding: 0.8rem 2rem;
+  border-radius: 30px;
+  cursor: pointer;
+}
+.LandingPageContainer .homeLeft .HomePageButtonsFlex .btn1 {
+  background-color: #359EAB;
+  color: #DBEAEE;
+  border: 1px solid #359EAB;
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.LandingPageContainer .homeLeft .HomePageButtonsFlex .btn2 {
+  background-color: #DBEAEE;
+  border: 1px solid #DBEAEE;
+  color: #06141d;
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.LandingPageContainer .homeLeft .HomePageButtonsFlex .btn1:hover {
+  background-color: #e7303c;
+  background-color: transparent;
+  -webkit-transition: all 0.4s ease 0s;
+  transition: all 0.4s ease 0s;
+}
+.LandingPageContainer .homeLeft .HomePageButtonsFlex .btn2:hover {
+  background-color: transparent;
+  border: 1px solid #DBEAEE;
+  color: #DBEAEE;
+  -webkit-transition: all 0.4s ease 0s;
+  transition: all 0.4s ease 0s;
+}
+.LandingPageContainer .homeRight {
+  width: 45%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.LandingPageContainer .homeRight .banner {
+  width: 30rem;
+}
+
+@media (max-width: 600px) {
+  .LandingPageContainer {
+    padding: 0;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    gap: 10px;
+  }
+  .LandingPageContainer .homeLeft {
+    width: 100%;
+  }
+  .LandingPageContainer .homeLeft .HeadingDescContainer .heading {
+    font-size: 3rem;
+    width: 100%;
+  }
+  .LandingPageContainer .homeLeft .HeadingDescContainer .heading .spaceHeading {
+    font-size: 5rem;
+    line-height: 4.5rem;
+  }
+  .LandingPageContainer .homeLeft .desc {
+    width: 100%;
+    font-size: 1rem;
+  }
+  .LandingPageContainer .homeRight {
+    width: 100%;
+  }
+  .LandingPageContainer .homeRight .banner {
+    width: 20rem;
+  }
+}/*# sourceMappingURL=LandingPage.css.map */
