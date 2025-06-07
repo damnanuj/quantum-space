@@ -9,12 +9,12 @@ const LoggedUserPosts = () => {
   const [error, setError] = useState(null);
   const [loggedInUser, setLoggedInUser] = useState(null);
 
-  const { username:userId } = useParams();
+  const { username: userId } = useParams();
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const { response, status } = await fetchUserPosts({userId});
+        const { response, status } = await fetchUserPosts({ userId });
         console.log("<<<<<<<<<<<<", response, status);
 
         if (response.success) {
@@ -31,7 +31,7 @@ const LoggedUserPosts = () => {
     };
 
     fetchPosts();
-  }, []);
+  }, [userId]);
 
   return (
     <PostCard

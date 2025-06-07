@@ -155,7 +155,8 @@ export const getUserSuggestions = async (req, res) => {
     const suggestedUsers = await User.find(filter)
       .select("name username profilePicture about gender")
       .skip(skip)
-      .limit(parseInt(limit));
+      .limit(parseInt(limit))
+      .sort({ createdAt: -1 });
 
     // Count total suggestions
     const totalSuggestions = await User.countDocuments(filter);
