@@ -4,6 +4,7 @@ import { Tabs } from "antd";
 import "./feedTabs.scss";
 
 import Posts from "../Posts/Posts";
+import FollowingPosts from "../Posts/FollowingPosts";
 
 const onChange = (key) => {
   // console.log(key);
@@ -17,7 +18,7 @@ const items = [
   {
     key: "2",
     label: "Following",
-    children: <Posts />,
+    children: <FollowingPosts />,
   },
 ];
 const FeedTabs = () => (

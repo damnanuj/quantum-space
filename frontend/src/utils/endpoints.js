@@ -1,5 +1,5 @@
-// export const baseUrl = "https://quantum-space.onrender.com/api";
-export const baseUrl = "http://localhost:8000/api";
+export const baseUrl = "https://quantum-space.onrender.com/api";
+// export const baseUrl = "http://localhost:8000/api";
 
 // >>=============authentication endpoints===================>>
 export const authEndpoints = {
