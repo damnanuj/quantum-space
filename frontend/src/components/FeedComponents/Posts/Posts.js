@@ -7,6 +7,8 @@ import { timeAgo } from "../../../utils/convertTimestamp";
 import { likeUnlikePost } from "../../../utils/apis/feed/likeUnlikePost";
 import { message } from "antd";
 import SeeMore from "../../Common/SeeMore/SeeMore";
+import CommentsModal from "./CommentsModal";
+import { useDisclosure } from "@heroui/react";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -16,6 +18,8 @@ const Posts = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pages, setPages] = useState(1);
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
+
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   //>>============= Fetch posts based on page number=================>>
   const fetchPosts = async (page) => {
@@ -116,7 +120,7 @@ const Posts = () => {
               ></i>
               <p>{post.likes.length} Likes</p>
             </div>
-            <div className="comment">
+            <div className="comment" onClick={onOpenChange}>
               <i className="fa-solid fa-comment-dots"></i>
               <p>{post.comments.length} Comments</p>
             </div>
@@ -131,6 +135,12 @@ const Posts = () => {
           No more posts
         </div>
       )}
+
+      <CommentsModal
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+      />
     </>
   );
 };
