@@ -8,8 +8,9 @@ import {
   useDisclosure,
 } from "@heroui/react";
 
-export default function CommentsModal({ isOpen, onOpen, onOpenChange }) {
+export default function CommentsModal({ post, isOpen, onOpen, onOpenChange }) {
   //   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  console.log(post, "postsss");
 
   return (
     <>
@@ -21,7 +22,11 @@ export default function CommentsModal({ isOpen, onOpen, onOpenChange }) {
                 Comments
               </ModalHeader>
               <ModalBody className="px-3">
-                <div className="w-full h-14 border-2 bg-red-400 border-green-600"></div>
+                <div className="w-full h-14 border-2 bg-red-400 border-green-600">
+                  {post?.comments?.map((item) => (
+                    <p>{item.text}</p>
+                  ))}
+                </div>
               </ModalBody>
               <ModalFooter></ModalFooter>
             </>

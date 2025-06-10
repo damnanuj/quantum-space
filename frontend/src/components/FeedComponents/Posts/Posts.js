@@ -9,8 +9,10 @@ import { message } from "antd";
 import SeeMore from "../../Common/SeeMore/SeeMore";
 import CommentsModal from "./CommentsModal";
 import { useDisclosure } from "@heroui/react";
+import PostCard from "../../PostCard/PostCard";
 
 const Posts = () => {
+  const [selectedPost, setSelectedPost] = useState(null);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -90,58 +92,79 @@ const Posts = () => {
   if (loading) return <PostSkeleton loading={loading} />;
   if (error) return <p>Error loading blogs: {error.message}</p>;
 
+  const handleCommentClick = (post) => {
+    onOpenChange();
+    setSelectedPost(post);
+  };
+
+  // return (
+  //   <>
+  //     {posts.map((post) => (
+  //       <div key={post._id} className="blog_container">
+  //         <div className="blogOwnerInfo">
+  //           <div className="topFlex">
+  //             <img src={post.user.profilePicture} alt="profilePicture" />
+  //             <div className="nameAndTimeHolder">
+  //               <h3>{post.user.name}</h3>
+  //               <p>{timeAgo(post.createdAt)}</p>
+  //             </div>
+  //             <span>@{post.user.username}</span>
+  //           </div>
+  //           {loggedInUser === post.user._id && (
+  //             <PostMenu postId={post._id} onPostDeleted={handlePostDeleted} />
+  //           )}
+  //         </div>
+  //         <div className="blogContent">
+  //           <p>{post.caption}</p>
+  //           {post.image && <img src={post.image} alt="postImage" />}
+  //         </div>
+  //         <div className="likesCommentsContainer">
+  //           <div className="like" onClick={() => handleLikeUnlike(post._id)}>
+  //             <i
+  //               className={`fa-heart ${
+  //                 post.likes.includes(loggedInUser) ? "fa-solid" : "fa-regular"
+  //               }`}
+  //             ></i>
+  //             <p>{post.likes.length} Likes</p>
+  //           </div>
+  //           <div className="comment" onClick={() => handleCommentClick(post)}>
+  //             <i className="fa-solid fa-comment-dots"></i>
+  //             <p>{post.comments.length} Comments</p>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     ))}
+
+  //     {!isLastPage || isFetchingNextPage ? (
+  //       <SeeMore loadMore={loadMorePosts} isLoading={isFetchingNextPage} />
+  //     ) : (
+  //       <div style={{ textAlign: "center", color: "#dc172a" }}>
+  //         No more posts
+  //       </div>
+  //     )}
+
+  //     <CommentsModal
+  //       isOpen={isOpen}
+  //       onOpen={onOpen}
+  //       onOpenChange={onOpenChange}
+  //       post={selectedPost}
+  //     />
+  //   </>
+  // );
+
   return (
-    <>
-      {posts.map((post) => (
-        <div key={post._id} className="blog_container">
-          <div className="blogOwnerInfo">
-            <div className="topFlex">
-              <img src={post.user.profilePicture} alt="profilePicture" />
-              <div className="nameAndTimeHolder">
-                <h3>{post.user.name}</h3>
-                <p>{timeAgo(post.createdAt)}</p>
-              </div>
-              <span>@{post.user.username}</span>
-            </div>
-            {loggedInUser === post.user._id && (
-              <PostMenu postId={post._id} onPostDeleted={handlePostDeleted} />
-            )}
-          </div>
-          <div className="blogContent">
-            <p>{post.caption}</p>
-            {post.image && <img src={post.image} alt="postImage" />}
-          </div>
-          <div className="likesCommentsContainer">
-            <div className="like" onClick={() => handleLikeUnlike(post._id)}>
-              <i
-                className={`fa-heart ${
-                  post.likes.includes(loggedInUser) ? "fa-solid" : "fa-regular"
-                }`}
-              ></i>
-              <p>{post.likes.length} Likes</p>
-            </div>
-            <div className="comment" onClick={onOpenChange}>
-              <i className="fa-solid fa-comment-dots"></i>
-              <p>{post.comments.length} Comments</p>
-            </div>
-          </div>
-        </div>
-      ))}
-
-      {!isLastPage || isFetchingNextPage ? (
-        <SeeMore loadMore={loadMorePosts} isLoading={isFetchingNextPage} />
-      ) : (
-        <div style={{ textAlign: "center", color: "#dc172a" }}>
-          No more posts
-        </div>
-      )}
-
-      <CommentsModal
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onOpenChange={onOpenChange}
-      />
-    </>
+    <PostCard
+      posts={posts}
+      setPosts={setPosts}
+      loggedInUser={loggedInUser}
+      fetchPosts={fetchPosts}
+      isFetchingNextPage={false}
+      isProfilePage={true}
+      loadMorePosts={loadMorePosts}
+      isLastPage={true}
+      loading={loading}
+      error={error}
+    />
   );
 };
 
