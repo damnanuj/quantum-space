@@ -9,7 +9,6 @@ import {
   Image,
   Input,
 } from "@heroui/react";
-import profile from "../../../imgs/blank-profile.png";
 import { useContext } from "react";
 import { UserContext } from "../../../context/userContext";
 
