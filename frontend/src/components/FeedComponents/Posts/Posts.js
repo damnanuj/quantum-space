@@ -21,8 +21,6 @@ const Posts = () => {
   const [pages, setPages] = useState(1);
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
 
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
   //>>============= Fetch posts based on page number=================>>
   const fetchPosts = async (page) => {
     try {
@@ -92,10 +90,10 @@ const Posts = () => {
   if (loading) return <PostSkeleton loading={loading} />;
   if (error) return <p>Error loading blogs: {error.message}</p>;
 
-  const handleCommentClick = (post) => {
-    onOpenChange();
-    setSelectedPost(post);
-  };
+  // const handleCommentClick = (post) => {
+  //   onOpenChange();
+  //   setSelectedPost(post);
+  // };
 
   // return (
   //   <>

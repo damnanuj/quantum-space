@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./posts.scss";
 
 import PostSkeleton from "../../skeletons/PostsSkeleton";
@@ -7,6 +7,8 @@ import PostMenu from "../FeedComponents/PostDropMenu/PostDropMenu";
 import SeeMore from "../Common/SeeMore/SeeMore";
 import { message } from "antd";
 import { timeAgo } from "../../utils/convertTimestamp";
+import CommentsModal from "../FeedComponents/Posts/CommentsModal";
+import { useDisclosure } from "@heroui/react";
 
 const PostCard = ({
   posts,
@@ -20,6 +22,13 @@ const PostCard = ({
   loading,
   error,
 }) => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const [selectedPost, setSelectedPost] = useState(null);
+  const handleCommentClick = (post) => {
+    onOpenChange();
+    setSelectedPost(post);
+  };
   //>>============ Handle like/unlike ===============>>
   const handleLikeUnlike = async (postId) => {
     const updatedPosts = posts.map((post) => {
@@ -84,7 +93,7 @@ const PostCard = ({
               ></i>
               <p>{post.likes.length} Likes</p>
             </div>
-            <div className="comment">
+            <div className="comment" onClick={() => handleCommentClick(post)}>
               <i className="fa-solid fa-comment-dots"></i>
               <p>{post.comments.length} Comments</p>
             </div>
@@ -99,6 +108,13 @@ const PostCard = ({
           No more posts
         </div>
       )}
+
+      <CommentsModal
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+        post={selectedPost}
+      />
     </>
   );
 };
