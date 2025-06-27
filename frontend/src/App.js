@@ -27,8 +27,6 @@ function App() {
   useEffect(() => {
     const loggedIn = isTokenValid();
     setIsUserLogged(loggedIn);
-    
-    
 
     const currentPath = window.location.pathname;
 
@@ -48,7 +46,7 @@ function App() {
   }, [navigate, isUserLogged, window.location.pathname]);
 
   return (
-    <div className="App">
+    <div className="App h-screen">
       <UserProvider>
         <Routes>
           {/* Public Routes */}
