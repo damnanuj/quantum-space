@@ -10,6 +10,7 @@ import SeeMore from "../../Common/SeeMore/SeeMore";
 import CommentsModal from "./CommentsModal";
 import { useDisclosure } from "@heroui/react";
 import PostCard from "../../PostCard/PostCard";
+import HeroUiPagination from "../../Common/HeroUiPagination";
 
 const Posts = () => {
   const [selectedPost, setSelectedPost] = useState(null);
@@ -27,10 +28,13 @@ const Posts = () => {
       setIsFetchingNextPage(true);
       const { response, userId } = await fetchAllPosts(page);
 
+      const { currentPage, totalPages, count, totalPosts } = response;
+
       if (response.success) {
-        setPosts((prev) => [...prev, ...response.data]); // Append posts
-        setPages(response.totalPages); // Update total pages
-        setLoggedInUser(userId); // Save logged-in user
+        // setPosts((prev) => [...prev, ...response.data]); // Append posts
+        setPosts(response.data); // Replace posts
+        setPages(response.totalPages);
+        setLoggedInUser(userId);
       } else {
         throw new Error(response.message || "Failed to fetch posts.");
       }
@@ -48,13 +52,10 @@ const Posts = () => {
   }, [pageNumber]);
 
   //>>========= Load more posts ===============>>
-  const loadMorePosts = () => {
-    if (pageNumber < pages && !isFetchingNextPage) {
-      setPageNumber((prevPage) => prevPage + 1);
-    }
-  };
 
-  const isLastPage = pageNumber >= pages;
+  const handlePageChange = (page) => {
+    setPageNumber(page);
+  };
 
   //>>============ Handle like/unlike ===============>>
   const handleLikeUnlike = async (postId) => {
@@ -151,18 +152,26 @@ const Posts = () => {
   // );
 
   return (
-    <PostCard
-      posts={posts}
-      setPosts={setPosts}
-      loggedInUser={loggedInUser}
-      fetchPosts={fetchPosts}
-      isFetchingNextPage={false}
-      isProfilePage={true}
-      loadMorePosts={loadMorePosts}
-      isLastPage={true}
-      loading={loading}
-      error={error}
-    />
+    <>
+      <PostCard
+        posts={posts}
+        setPosts={setPosts}
+        loggedInUser={loggedInUser}
+        fetchPosts={fetchPosts}
+        isFetchingNextPage={false}
+        isProfilePage={true}
+        loading={loading}
+        error={error}
+      />
+
+      <div className="paginationWrapper border border-red-400 flex justify-center items-center">
+        <HeroUiPagination
+          page={pageNumber}
+          total={pages}
+          onChange={handlePageChange}
+        />
+      </div>
+    </>
   );
 };
 

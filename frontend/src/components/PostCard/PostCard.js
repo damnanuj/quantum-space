@@ -101,14 +101,6 @@ const PostCard = ({
         </div>
       ))}
 
-      {!isLastPage || isFetchingNextPage ? (
-        <SeeMore loadMore={loadMorePosts} isLoading={isFetchingNextPage} />
-      ) : (
-        <div style={{ textAlign: "center", color: "#dc172a" }}>
-          No more posts
-        </div>
-      )}
-
       <CommentsModal
         isOpen={isOpen}
         onOpen={onOpen}
