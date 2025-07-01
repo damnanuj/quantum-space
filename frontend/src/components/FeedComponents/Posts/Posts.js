@@ -164,7 +164,7 @@ const Posts = () => {
         error={error}
       />
 
-      <div className="paginationWrapper border border-red-400 flex justify-center items-center">
+      <div className="paginationWrapper flex justify-center items-center">
         <HeroUiPagination
           page={pageNumber}
           total={pages}
